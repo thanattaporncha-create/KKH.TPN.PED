@@ -211,39 +211,39 @@
   </div>
   
   <!-- 📝 ส่วนกรอกข้อมูลเอง (ซ่อนไว้) -->
-  <div style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
-    <button type="button" id="toggleManualInputBtn" style="background: #f8fafc; border: 2px solid #e2e8f0; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; color: #4a5568; width: 100%; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s;">
-      <span>📝 หรือกรอกข้อมูลเอง (ไม่ใช้รูป Sticker)</span>
-      <span id="toggleIcon">▼</span>
-    </button>
-    
-    <div id="manualInputSection" style="display: none; margin-top: 15px; padding: 15px; background: #f8fafc; border-radius: 8px; border: 2px solid #e2e8f0;">
-      <div class="input-group">
-        <div class="input-field">
-          <label for="patient-hn">HN</label>
-          <div class="input-with-unit">
-            <input type="text" id="patient-hn" placeholder="กรอก HN" style="padding-right:16px;">
-          </div>
-        </div>
-        <div class="input-field">
-          <label for="patient-name">ชื่อ-นามสกุล</label>
-          <div class="input-with-unit">
-            <input type="text" id="patient-name" placeholder="กรอกชื่อผู้ป่วย" style="padding-right:16px;">
-          </div>
+<div style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
+  <button type="button" id="toggleManualInputBtn" style="background: #f8fafc; border: 2px solid #e2e8f0; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; color: #4a5568; width: 100%; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s; font-family: 'Sarabun', 'Noto Sans Thai', Arial, sans-serif;">
+    <span>📝 หรือกรอกข้อมูลเอง (ไม่ใช้รูป Sticker)</span>
+    <span id="toggleIcon" style="font-size: 0.8em;">▼</span>
+  </button>
+  
+  <div id="manualInputSection" style="display: none; margin-top: 15px; padding: 15px; background: #f8fafc; border-radius: 8px; border: 2px solid #e2e8f0;">
+    <div class="input-group">
+      <div class="input-field">
+        <label for="patient-hn">HN</label>
+        <div class="input-with-unit">
+          <input type="text" id="patient-hn" placeholder="กรอก HN" style="padding-right:16px;">
         </div>
       </div>
-      <div class="input-group">
-        <div class="input-field">
-          <label for="patient-ward">Ward</label>
-          <div class="input-with-unit">
-            <input type="text" id="patient-ward" placeholder="กรอก Ward" style="padding-right:16px;">
-          </div>
+      <div class="input-field">
+        <label for="patient-name">ชื่อ-นามสกุล</label>
+        <div class="input-with-unit">
+          <input type="text" id="patient-name" placeholder="กรอกชื่อผู้ป่วย" style="padding-right:16px;">
         </div>
-        <div class="input-field"><!-- spacer --></div>
       </div>
     </div>
+    <div class="input-group">
+      <div class="input-field">
+        <label for="patient-ward">Ward</label>
+        <div class="input-with-unit">
+          <input type="text" id="patient-ward" placeholder="กรอก Ward" style="padding-right:16px;">
+        </div>
+      </div>
+      <div class="input-field"><!-- spacer --></div>
+    </div>
   </div>
-    
+</div>
+  
   <!-- Route -->
       <div class="route-selection">
         <h3>Route การให้ TPN</h3>
