@@ -169,75 +169,79 @@
 <section class="section">
   <h2>ข้อมูลผู้ป่วย</h2>
   
-  <!-- 📸 เพิ่มส่วนถ่ายรูป Sticker -->
+  <!-- 📸 ส่วนถ่ายรูป Sticker -->
   <div style="margin-bottom: 20px;">
     <h3 style="color: #2d3748; font-size: 1.05em; font-weight: 600; margin-bottom: 12px;">
-      📸 ถ่ายรูป Patient Sticker (แนะนำ)
+      📸 ถ่ายรูป Patient Sticker
     </h3>
     
-    <!-- ปุ่มเปิดกล้อง / เลือกไฟล์ -->
+    <!-- ปุ่มเปิดกล้อง + ลบรูป -->
     <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
-      <button type="button" id="openCameraBtn" class="btn" style="background: #10b981; padding: 12px 20px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px;">
+      <button type="button" id="openCameraBtn" class="btn" style="background: #10b981; padding: 12px 20px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(16,185,129,0.4);">
         📷 เปิดกล้องถ่ายรูป
       </button>
-      <button type="button" id="uploadStickerBtn" class="btn secondary" style="padding: 12px 20px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px;">
-        📁 เลือกรูปจากเครื่อง
-      </button>
-      <button type="button" id="clearStickerBtn" class="btn" style="background: #ef4444; padding: 12px 20px; border-radius: 8px; display: none;">
+      <button type="button" id="clearStickerBtn" class="btn" style="background: #ef4444; padding: 12px 20px; border-radius: 8px; display: none; box-shadow: 0 4px 12px rgba(239,68,68,0.4);">
         🗑️ ลบรูป
       </button>
     </div>
     
-    <!-- แสดงตัวอย่างรูปที่ถ่าย/เลือก -->
+    <!-- แสดงตัวอย่างรูปที่ถ่าย -->
     <div id="stickerPreviewContainer" style="display: none; border: 2px dashed #4facfe; border-radius: 8px; padding: 15px; background: #f0f9ff; text-align: center;">
-      <p style="margin-bottom: 10px; font-weight: 600; color: #0369a1;">✅ รูป Sticker ที่เลือก:</p>
+      <p style="margin-bottom: 10px; font-weight: 600; color: #0369a1;">✅ รูป Patient Sticker:</p>
       <img id="stickerPreview" src="" alt="Patient Sticker" style="max-width: 200px; max-height: 160px; border: 2px solid #e2e8f0; border-radius: 4px; background: white;">
     </div>
     
-    <!-- Input file แบบซ่อน -->
-    <input type="file" id="stickerFileInput" accept="image/*" style="display: none;">
-    
-    <!-- Video สำหรับกล้อง (แบบ Modal) -->
+    <!-- Video สำหรับกล้อง (Modal) -->
     <div id="cameraModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; padding: 20px;">
       <div style="background: white; border-radius: 12px; padding: 20px; max-width: 90%; max-height: 90%; overflow: auto;">
-        <h3 style="margin-bottom: 15px; text-align: center;">📸 ถ่ายรูป Patient Sticker</h3>
+        <h3 style="margin-bottom: 15px; text-align: center; color: #2d3748;">📸 ถ่ายรูป Patient Sticker</h3>
+        <p style="text-align: center; color: #64748b; margin-bottom: 15px; font-size: 0.9em;">วางสติกเกอร์ให้อยู่ในกรอบแล้วกดถ่ายรูป</p>
         <video id="cameraVideo" autoplay playsinline style="width: 100%; max-width: 500px; border: 2px solid #e2e8f0; border-radius: 8px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;"></video>
         <canvas id="cameraCanvas" style="display: none;"></canvas>
-        <div style="display: flex; gap: 10px; justify-content: center;">
-          <button type="button" id="captureBtn" class="btn" style="background: #10b981; padding: 12px 24px; border-radius: 8px;">
+        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+          <button type="button" id="captureBtn" class="btn" style="background: #10b981; padding: 12px 24px; border-radius: 8px; font-weight: 600;">
             📷 ถ่ายรูป
           </button>
-          <button type="button" id="closeCameraBtn" class="btn secondary" style="padding: 12px 24px; border-radius: 8px;">
-            ❌ ปิด
+          <button type="button" id="closeCameraBtn" class="btn secondary" style="padding: 12px 24px; border-radius: 8px; font-weight: 600;">
+            ❌ ยกเลิก
           </button>
         </div>
       </div>
     </div>
   </div>
   
-  <!-- ส่วนกรอกข้อมูลเดิม (หรือจะซ่อนก็ได้ ถ้าใช้แค่รูป) -->
-  <div class="input-group">
-    <div class="input-field">
-      <label for="patient-hn">HN</label>
-      <div class="input-with-unit">
-        <input type="text" id="patient-hn" placeholder="กรอก HN (หรือใช้รูป Sticker)" style="padding-right:16px;">
+  <!-- 📝 ส่วนกรอกข้อมูลเอง (ซ่อนไว้) -->
+  <div style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
+    <button type="button" id="toggleManualInputBtn" style="background: #f8fafc; border: 2px solid #e2e8f0; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; color: #4a5568; width: 100%; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s;">
+      <span>📝 หรือกรอกข้อมูลเอง (ไม่ใช้รูป Sticker)</span>
+      <span id="toggleIcon">▼</span>
+    </button>
+    
+    <div id="manualInputSection" style="display: none; margin-top: 15px; padding: 15px; background: #f8fafc; border-radius: 8px; border: 2px solid #e2e8f0;">
+      <div class="input-group">
+        <div class="input-field">
+          <label for="patient-hn">HN</label>
+          <div class="input-with-unit">
+            <input type="text" id="patient-hn" placeholder="กรอก HN" style="padding-right:16px;">
+          </div>
+        </div>
+        <div class="input-field">
+          <label for="patient-name">ชื่อ-นามสกุล</label>
+          <div class="input-with-unit">
+            <input type="text" id="patient-name" placeholder="กรอกชื่อผู้ป่วย" style="padding-right:16px;">
+          </div>
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="input-field">
+          <label for="patient-ward">Ward</label>
+          <div class="input-with-unit">
+            <input type="text" id="patient-ward" placeholder="กรอก Ward" style="padding-right:16px;">
+          </div>
+        </div>
+        <div class="input-field"><!-- spacer --></div>
       </div>
     </div>
-    <div class="input-field">
-      <label for="patient-name">ชื่อ-นามสกุล</label>
-      <div class="input-with-unit">
-        <input type="text" id="patient-name" placeholder="กรอกชื่อผู้ป่วย (หรือใช้รูป Sticker)" style="padding-right:16px;">
-      </div>
-    </div>
-  </div>
-  <div class="input-group">
-    <div class="input-field">
-      <label for="patient-ward">Ward</label>
-      <div class="input-with-unit">
-        <input type="text" id="patient-ward" placeholder="กรอก Ward (หรือใช้รูป Sticker)" style="padding-right:16px;">
-      </div>
-    </div>
-    <div class="input-field"><!-- spacer --></div>
   </div>
     
   <!-- Route -->
