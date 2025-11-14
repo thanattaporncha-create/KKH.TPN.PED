@@ -745,19 +745,21 @@
         async function saveAsImage() {
     const root = document.getElementById('report-root');
 
-    // ปรับ layout เข้าโหมด export (ถ้ามี class exporting ก็ใช้ร่วมได้)
+    // เข้าโหมด export ให้ layout สวยก่อนถ่าย
     toggleExporting(true);
     await new Promise(r => requestAnimationFrame(r));
 
-    // ใช้ scale ตามหน้าจอ (เช่น iPhone = 3) แต่ไม่เกิน 3 ป้องกันแครช
-    const scale = Math.min(window.devicePixelRatio || 2, 3);
+    // ดันความละเอียดให้สูงขึ้นอีก
+    const dpr = window.devicePixelRatio || 2;
+    // เช่น iPhone dpr = 3 → scale = min(3 * 2, 4.5) = 4
+    const scale = Math.min(dpr * 2, 4.5);
 
     const canvas = await html2canvas(root, {
         scale: scale,
         useCORS: true,
         backgroundColor: '#ffffff',
         scrollX: 0,
-        scrollY: -window.scrollY,   // กัน Safari ขยับภาพ
+        scrollY: -window.scrollY,
         windowWidth: document.documentElement.scrollWidth,
         windowHeight: document.documentElement.scrollHeight
     });
