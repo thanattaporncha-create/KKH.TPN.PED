@@ -1320,92 +1320,117 @@
   });
 
   document.getElementById('submitBtn')?.addEventListener('click', function() {
-    const hn = document.getElementById('patient-hn')?.value.trim();
-    const name = document.getElementById('patient-name')?.value.trim();
-    const ward = document.getElementById('patient-ward')?.value.trim();
-    const bw = document.getElementById('bw')?.value;
-    const orderDate = document.getElementById('order-date')?.value;
+  const bw = document.getElementById('bw')?.value;
+  const orderDate = document.getElementById('order-date')?.value;
 
-    if (!hn || !name || !ward || !bw || !orderDate) {
-      alert('⚠️ กรุณากรอกข้อมูลให้ครบถ้วน');
-      return;
-    }
+  // ✅ เช็คว่ามีน้ำหนักและวันที่หรือไม่
+  if (!bw || !orderDate) {
+    alert('⚠️ กรุณากรอก Body Weight และ Order Date');
+    return;
+  }
 
-    const dayName = getDayName(orderDate);
-    const dsel = id => document.getElementById(id)?.textContent || document.getElementById(id)?.value || '';
+  // ✅ เช็คว่ามีรูป Sticker หรือกรอกข้อมูลครบ
+  const hasStickerImage = window.hasStickerImage && window.hasStickerImage();
+  const hn = document.getElementById('patient-hn')?.value.trim();
+  const name = document.getElementById('patient-name')?.value.trim();
+  const ward = document.getElementById('patient-ward')?.value.trim();
+  
+  const hasManualData = hn && name && ward;
 
-    const reportData = {
-      orderDate,
-      orderDayName: dayName,
-      route: document.querySelector('input[name="tpn-route"]:checked')?.value || 'central',
-      proteinProduct: getProteinProductName(),
-      fatProduct: getFatProductName(),
-      hn, name, ward, bw,
-      rate: document.getElementById('rate')?.value || '0',
-      bag: document.getElementById('bag')?.value || '0',
-      protein: document.getElementById('protein')?.value || '0',
-      dextrose: document.getElementById('dextrose')?.value || '0',
-      fat: document.getElementById('fat')?.value || '0',
-      milk: document.getElementById('milk')?.value || '0',
-      totalMilk: document.getElementById('total-milk')?.value || '0',
-      p: document.getElementById('p')?.value || '0',
-      na: document.getElementById('na')?.value || '0',
-      k: document.getElementById('k')?.value || '0',
-      ca: document.getElementById('ca')?.value || '0',
-      mg: document.getElementById('mg')?.value || '0',
+  // ต้องมีอย่างใดอย่างหนึ่ง: รูป Sticker หรือข้อมูลครบ
+  if (!hasStickerImage && !hasManualData) {
+    alert('⚠️ กรุณาถ่ายรูป Patient Sticker หรือกรอกข้อมูล HN, ชื่อ, Ward ให้ครบถ้วน');
+    return;
+  }
 
-      proteinVol: extractNumberString(dsel('protein-volume')),
-      proteinCal: extractNumberString(dsel('protein-calories')),
-      dextroseVol: extractNumberString(dsel('dextrose-volume')),
-      dextroseCal: extractNumberString(dsel('dextrose-calories')),
-      fatVol: extractNumberString(dsel('fat-volume')),
-      fatCal: extractNumberString(dsel('fat-calories')),
+  console.log('✅ Validation passed:', { hasStickerImage, hasManualData });
 
-      gir: dsel('gir-result'),
+  const dayName = getDayName(orderDate);
+  const dsel = id => document.getElementById(id)?.textContent || document.getElementById(id)?.value || '';
 
-      pVol: extractNumberString(dsel('p-volume')),
-      naFromGly: extractNumberString(dsel('na-from-glycophos')),
-      naSource: document.querySelector('input[name="na-source"]:checked')?.value || '',
-      naclVol: extractNumberString(dsel('nacl-volume')),
-      naAcVol: extractNumberString(dsel('na-acetate-volume')),
+  const reportData = {
+    orderDate,
+    orderDayName: dayName,
+    route: document.querySelector('input[name="tpn-route"]:checked')?.value || 'central',
+    proteinProduct: getProteinProductName(),
+    fatProduct: getFatProductName(),
+    
+    // ส่งข้อมูล Patient (ถ้ากรอก)
+    hn: hn || '',
+    name: name || '',
+    ward: ward || '',
+    
+    // ✅ ส่งรูป Sticker
+    stickerImage: window.getStickerImage ? window.getStickerImage() : null,
+    
+    bw,
+    rate: document.getElementById('rate')?.value || '0',
+    bag: document.getElementById('bag')?.value || '0',
+    protein: document.getElementById('protein')?.value || '0',
+    dextrose: document.getElementById('dextrose')?.value || '0',
+    fat: document.getElementById('fat')?.value || '0',
+    milk: document.getElementById('milk')?.value || '0',
+    totalMilk: document.getElementById('total-milk')?.value || '0',
+    p: document.getElementById('p')?.value || '0',
+    na: document.getElementById('na')?.value || '0',
+    k: document.getElementById('k')?.value || '0',
+    ca: document.getElementById('ca')?.value || '0',
+    mg: document.getElementById('mg')?.value || '0',
 
-      kSource: document.querySelector('input[name="k-source"]:checked')?.value || '',
-      kclVol: extractNumberString(dsel('kcl-volume')),
-      kAcVol: extractNumberString(dsel('k-acetate-volume')),
+    proteinVol: extractNumberString(dsel('protein-volume')),
+    proteinCal: extractNumberString(dsel('protein-calories')),
+    dextroseVol: extractNumberString(dsel('dextrose-volume')),
+    dextroseCal: extractNumberString(dsel('dextrose-calories')),
+    fatVol: extractNumberString(dsel('fat-volume')),
+    fatCal: extractNumberString(dsel('fat-calories')),
 
-      caVol: extractNumberString(dsel('ca-volume')),
-      mgVol: extractNumberString(dsel('mg-volume')),
+    gir: dsel('gir-result'),
 
-      peditrace: extractNumberString(dsel('peditrace-volume')),
-      peditFreq: document.querySelector('input[name="peditrace-freq"]:checked')?.value || 'daily',
-      peditDay: document.getElementById('peditrace-day')?.value || '1',
+    pVol: extractNumberString(dsel('p-volume')),
+    naFromGly: extractNumberString(dsel('na-from-glycophos')),
+    naSource: document.querySelector('input[name="na-source"]:checked')?.value || '',
+    naclVol: extractNumberString(dsel('nacl-volume')),
+    naAcVol: extractNumberString(dsel('na-acetate-volume')),
 
-      cernevit: extractNumberString(dsel('cernevit-volume')),
-      cernFreq: document.querySelector('input[name="cernevit-freq"]:checked')?.value || 'daily',
-      cernDay: document.getElementById('cernevit-day')?.value || '1',
+    kSource: document.querySelector('input[name="k-source"]:checked')?.value || '',
+    kclVol: extractNumberString(dsel('kcl-volume')),
+    kAcVol: extractNumberString(dsel('k-acetate-volume')),
 
-      vitKChoice: document.querySelector('input[name="vitamin-k-choice"]:checked')?.value || 'daily',
-      vitKDay: document.getElementById('vitamin-k-day')?.value || '1',
-      vitKDaily: extractNumberString(dsel('vitamin-k-daily')),
-      vitKWeekly: extractNumberString(dsel('vitamin-k-weekly')),
+    caVol: extractNumberString(dsel('ca-volume')),
+    mgVol: extractNumberString(dsel('mg-volume')),
 
-      hasPicc: document.getElementById('picc-line-checkbox')?.checked || false,
-      heparinVol: extractNumberString(dsel('heparin-volume')),
+    peditrace: extractNumberString(dsel('peditrace-volume')),
+    peditFreq: document.querySelector('input[name="peditrace-freq"]:checked')?.value || 'daily',
+    peditDay: document.getElementById('peditrace-day')?.value || '1',
 
-      sterileWater: extractNumberString(dsel('sterile-water-volume')),
-      totalOsmol: extractNumberString(dsel('total-osmol')),
+    cernevit: extractNumberString(dsel('cernevit-volume')),
+    cernFreq: document.querySelector('input[name="cernevit-freq"]:checked')?.value || 'daily',
+    cernDay: document.getElementById('cernevit-day')?.value || '1',
 
-      totalCalDay: extractNumberString(dsel('total-calories-day')),
-      totalCalKg: extractNumberString(dsel('total-calories-kg')),
-      pnCalKg: extractNumberString(dsel('breakdown-pn')),
-      milkCalKg: extractNumberString(dsel('breakdown-milk')),
-      tfFromMilk: dsel('tf-from-milk')
-    };
+    vitKChoice: document.querySelector('input[name="vitamin-k-choice"]:checked')?.value || 'daily',
+    vitKDay: document.getElementById('vitamin-k-day')?.value || '1',
+    vitKDaily: extractNumberString(dsel('vitamin-k-daily')),
+    vitKWeekly: extractNumberString(dsel('vitamin-k-weekly')),
 
-    localStorage.setItem('tpnReportData', JSON.stringify(reportData));
-    autosaveCollect();
-    window.location.href = 'report.html';
-  });
+    hasPicc: document.getElementById('picc-line-checkbox')?.checked || false,
+    heparinVol: extractNumberString(dsel('heparin-volume')),
+
+    sterileWater: extractNumberString(dsel('sterile-water-volume')),
+    totalOsmol: extractNumberString(dsel('total-osmol')),
+
+    totalCalDay: extractNumberString(dsel('total-calories-day')),
+    totalCalKg: extractNumberString(dsel('total-calories-kg')),
+    pnCalKg: extractNumberString(dsel('breakdown-pn')),
+    milkCalKg: extractNumberString(dsel('breakdown-milk')),
+    tfFromMilk: dsel('tf-from-milk')
+  };
+
+  localStorage.setItem('tpnReportData', JSON.stringify(reportData));
+  autosaveCollect();
+  
+  console.log('✅ Report data saved, redirecting...');
+  window.location.href = 'report.html';
+});
 
   // ========== Patient Sticker Camera Feature ==========
 (function initStickerCamera() {
