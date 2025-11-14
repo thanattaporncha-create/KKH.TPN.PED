@@ -21,23 +21,22 @@
       padding: 0;
     }
 
-    /* กล่องหลักของรายงาน: ขนาดใกล้เคียง A4 แนวตั้ง */
+    /* กล่องหลักของรายงาน */
     .report-container {
-      width: 820px;          /* หุบความกว้างลงนิดนึง */
+      width: 820px;
       min-width: 820px;
       margin: 0 auto;
-      background: #fff;
+      background: white;
       padding: 16px 18px;
     }
 
-    /* ครอบ report ทั้งใบ: ถ้าจอแคบกว่ากระดาษ ให้เลื่อนซ้าย-ขวาได้ */
+    /* ครอบ report ทั้งใบ ให้เลื่อนซ้าย-ขวาได้ถ้าจอแคบ */
     .scale-wrap {
       position: relative;
       width: 100%;
       overflow-x: auto;
     }
 
-    /* header */
     .header {
       text-align: left;
       margin-bottom: 12px;
@@ -56,7 +55,7 @@
     .section { margin-bottom: 10px; }
     .section-title {
       background: #4facfe;
-      color: #fff;
+      color: white;
       padding: 5px 10px;
       font-size: 10pt;
       font-weight: 600;
@@ -70,21 +69,9 @@
       gap: 6px 12px;
       margin-bottom: 8px;
     }
-    .info-item {
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-    }
-    .info-label {
-      font-weight: 600;
-      color: #2d3748;
-      min-width: 90px;
-      flex-shrink: 0;
-    }
-    .info-value {
-      color: #4a5568;
-      flex: 1;
-    }
+    .info-item { display: flex; align-items: baseline; gap: 6px; }
+    .info-label { font-weight: 600; color: #2d3748; min-width: 90px; flex-shrink: 0; }
+    .info-value { color: #4a5568; flex: 1; }
 
     .order-date-special {
       background: #f0f9ff;
@@ -106,7 +93,7 @@
     }
     .order-date-special .day-badge {
       background: #0369a1;
-      color: #fff;
+      color: white;
       padding: 3px 10px;
       border-radius: 20px;
       font-size: 9pt;
@@ -117,7 +104,7 @@
     .route-badge {
       display: inline-block;
       background: #10b981;
-      color: #fff;
+      color: white;
       padding: 4px 12px;
       border-radius: 20px;
       font-size: 10pt;
@@ -125,7 +112,6 @@
     }
     .route-badge.peripheral { background: #f59e0b; }
 
-    /* ตาราง composition */
     .composition-table {
       width: 100%;
       border-collapse: collapse;
@@ -171,7 +157,7 @@
     }
     .btn {
       background: #4facfe;
-      color: #fff;
+      color: white;
       border: none;
       padding: 10px 16px;
       border-radius: 25px;
@@ -187,12 +173,17 @@
     }
     .btn.secondary:hover { background: #4a5568; }
 
-    /* summary */
-    .summary-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 9pt;
+    @media print {
+      body { padding: 0; margin: 0; background: #fff; }
+      .top-actions { display: none; }
+      .report-container { box-shadow: none; padding: 0; width: 100%; min-width: 0; }
+      #report-root.scale-80-print { transform: scale(0.8); transform-origin: top left; }
+      .header { margin-bottom: 10px; padding-bottom: 6px; }
+      .section { margin-bottom: 8px; }
     }
+
+    /* Summary */
+    .summary-table { width: 100%; border-collapse: collapse; font-size: 9pt; }
     .summary-table th,
     .summary-table td {
       border: 1px solid #e2e8f0;
@@ -209,36 +200,46 @@
     .osmol-ok { color: #166534; font-weight: 700; }
     .osmol-high { color: #991b1b; font-weight: 700; }
 
-    .footer {
-      margin-top: 10px;
-      font-size: 8.5pt;
-      color: #4b5563;
-      text-align: left;
-    }
-
-    /* ─────────── Patient sticker ─────────── */
+    /* กล่องสติ๊กเกอร์ + กรอบ fixed size เพื่อกันยืด */
     #sticker-container {
+      display: none;
       text-align: center;
       padding: 12px;
       background: #f8fafc;
       border-radius: 8px;
       border: 2px solid #4facfe;
-      min-width: 240px;       /* ให้กล่องกว้างพอในแนวนอน */
     }
-
-    #sticker-image {
-      display: block;
-      width: 220px;           /* กรอบประมาณ 5 ซม. */
-      height: 132px;          /* อัตราส่วน 5:3 */
-      margin: 0 auto;
+    .sticker-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .sticker-label {
+      font-weight: 600;
+      color: #2d3748;
+      font-size: 0.9em;
+    }
+    .sticker-frame {
+      width: 200px;      /* กรอบ 5 ซม. (ประมาณ) */
+      height: 160px;     /* สูงประมาณ 3–4 ซม. */
       border: 2px solid #e2e8f0;
       border-radius: 4px;
-      background: #fff;
-      object-fit: cover;      /* ✅ ครอปรูปให้เต็มกรอบ ไม่ยืด */
-      object-position: center;
+      background: white;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #sticker-image {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      display: block;
     }
 
-    /* ปรับเฉพาะปุ่มบนจอเล็ก ไม่แตะ layout ด้านใน */
+    /* iPhone / จอเล็ก: ปรับเฉพาะปุ่ม */
     @media (max-width: 480px) {
       .top-actions {
         left: 10px;
@@ -254,20 +255,29 @@
       }
     }
 
-    @media print {
-      body { padding: 0; margin: 0; background: #fff; }
-      .top-actions { display: none; }
-      .report-container {
-        box-shadow: none;
-        padding: 0;
-        width: 100%;
-        min-width: 0;
+    /* มือถือ: ให้กล่องสติ๊กเกอร์กินความกว้างทั้งแถว (อยู่ขวาบนบนจอใหญ่, กลางบนจอเล็ก) */
+    @media (max-width: 768px) {
+      #sticker-container {
+        grid-column: 1 / -1;
+        margin-bottom: 15px;
       }
-      .header { margin-bottom: 10px; padding-bottom: 6px; }
-      .section { margin-bottom: 8px; }
+      .section > div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+      }
     }
 
-    /* ===== Overlay ดูรูปหลัง Save Image ===== */
+    /* โหมด export: ให้ header เรียงซ้าย-ขวา */
+    #report-root.exporting .header {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    #report-root.exporting .order-date-special {
+      position: static;
+      margin-left: auto;
+    }
+
+    /* Overlay ดูรูปหลัง Save Image */
     .image-viewer {
       position: fixed;
       inset: 0;
@@ -312,7 +322,7 @@
       text-align: right;
     }
     .image-viewer img {
-      width: 900px;      /* ให้ภาพใหญ่เท่าหน้ากระดาษ */
+      width: 900px;
       max-width: 100%;
       height: auto;
       display: block;
@@ -323,6 +333,13 @@
     }
 
     .hidden { display: none !important; }
+
+    .footer {
+      margin-top: 10px;
+      font-size: 8.5pt;
+      color: #4b5563;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
@@ -361,9 +378,8 @@
       <div class="section">
         <div class="section-title">👤 Patient Information</div>
 
-        <!-- grid 2 คอลัมน์: ซ้ายข้อมูล / ขวา sticker -->
-        <div style="display:grid; grid-template-columns: minmax(0,1.7fr) auto; gap:20px; align-items:flex-start;">
-          <!-- ข้อมูลผู้ป่วย (ซ้าย) -->
+        <div style="display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;">
+          <!-- ข้อมูลผู้ป่วย -->
           <div class="info-grid" id="patient-info-text">
             <div class="info-item">
               <span class="info-label">HN:</span>
@@ -389,12 +405,14 @@
             </div>
           </div>
 
-          <!-- รูป Sticker (ขวา) -->
-          <div id="sticker-container" style="display:none;">
-            <p style="font-weight:600; color:#2d3748; margin-bottom:8px; font-size:0.9em;">
-              📋 Patient Sticker
-            </p>
-            <img id="sticker-image" src="" alt="Patient Sticker">
+          <!-- กล่องสติ๊กเกอร์ -->
+          <div id="sticker-container">
+            <div class="sticker-inner">
+              <p class="sticker-label">📋 Patient Sticker</p>
+              <div class="sticker-frame">
+                <img id="sticker-image" src="" alt="Patient Sticker">
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -421,9 +439,9 @@
           <thead>
             <tr>
               <th style="width:35%;">Component</th>
-              <th style="width:20%; text-align:center;">Dosage</th>
-              <th style="width:20%; text-align:center;">Volume (ml)</th>
-              <th style="width:25%; text-align:center;">Note</th>
+              <th style="width:20%;text-align:center;">Dosage</th>
+              <th style="width:20%;text-align:center;">Volume (ml)</th>
+              <th style="width:25%;text-align:center;">Note</th>
             </tr>
           </thead>
           <tbody id="composition-body"></tbody>
@@ -476,34 +494,38 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <script>
-    function goBack() { window.location.href = 'index.html'; }
+    function goBack() {
+      window.location.href = 'index.html';
+    }
 
-    // ปัดแบบพิเศษ 2 ตำแหน่ง (เหมือน r2 ใน index.html) สำหรับ fallback Mg
-    function specialRound2(v){
+    // ปัดแบบ r2 สำหรับ Mg fallback
+    function specialRound2(v) {
       const n = Number(v);
       if (!isFinite(n) || n === 0) return '0.00';
       const h = Math.floor(n * 1000);
       const d3 = h % 10;
-      const out = (d3 === 9) ? Math.ceil(n * 100) / 100 : Math.floor(n * 100) / 100;
+      const out = (d3 === 9)
+        ? Math.ceil(n * 100) / 100
+        : Math.floor(n * 100) / 100;
       return out.toFixed(2);
     }
 
-    // Load data จาก localStorage
+    // Load data
     const data = JSON.parse(localStorage.getItem('tpnReportData') || '{}');
 
-    // ✨ แสดงรูป Sticker ถ้ามี
+    // แสดงรูปสติ๊กเกอร์ถ้ามี
     if (data.stickerImage) {
       const stickerContainer = document.getElementById('sticker-container');
       const stickerImage = document.getElementById('sticker-image');
       stickerImage.src = data.stickerImage;
       stickerContainer.style.display = 'block';
 
-      // ถ้าไม่ได้กรอก HN / Name / Ward ให้ซ่อน 3 แถวนี้ (ใช้แต่รูป)
+      // ถ้าไม่ได้กรอก HN/Name/Ward ให้ซ่อนสามบรรทัดนั้น
       if (!data.hn && !data.name && !data.ward) {
         const infoItems = document.querySelectorAll('#patient-info-text .info-item');
-        if (infoItems[0]) infoItems[0].style.display = 'none'; // HN
-        if (infoItems[1]) infoItems[1].style.display = 'none'; // Name
-        if (infoItems[2]) infoItems[2].style.display = 'none'; // Ward
+        if (infoItems[0]) infoItems[0].style.display = 'none';
+        if (infoItems[1]) infoItems[1].style.display = 'none';
+        if (infoItems[2]) infoItems[2].style.display = 'none';
       }
     }
 
@@ -518,7 +540,8 @@
     let dayNameText = data.orderDayName || '-';
     if (data.orderDate && data.orderDate !== '-') {
       const date = new Date(data.orderDate);
-      const thaiMonths = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+      const thaiMonths = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน',
+                          'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
       const day = date.getDate();
       const month = thaiMonths[date.getMonth()];
       const year = date.getFullYear() + 543;
@@ -530,13 +553,13 @@
     document.getElementById('display-order-date').textContent = displayDate;
     document.getElementById('display-day-name').textContent   = dayNameText;
 
-    // Route badge
+    // Route
     const routeBadge = document.getElementById('display-route');
     routeBadge.textContent = (data.route === 'central') ? 'Central Line' : 'Peripheral Line';
     if (data.route === 'peripheral') routeBadge.classList.add('peripheral');
 
     // Bag & Rate
-    document.getElementById('display-bag').textContent  = data.bag  ? `${data.bag} ml` : '-';
+    document.getElementById('display-bag').textContent  = data.bag  ? `${data.bag} ml`   : '-';
     document.getElementById('display-rate').textContent = data.rate ? `${data.rate} ml/hr` : '-';
 
     // Composition table
@@ -616,7 +639,7 @@
     }
 
     // MgSO4
-    (function handleMg(){
+    (function handleMg() {
       const mgRawStr = (data.mgVol !== undefined && data.mgVol !== null && String(data.mgVol).trim() !== '')
         ? String(data.mgVol).replace(/[^0-9.\-]/g, '')
         : '';
@@ -715,7 +738,7 @@
       });
     }
 
-    // Sterile water ท้ายสุด
+    // Sterile water
     if (parseFloat(data.sterileWater) > 0) {
       compositions.push({
         name: 'Sterile Water',
@@ -731,26 +754,26 @@
       const row = document.createElement('tr');
       if (comp.highlight) row.classList.add('highlight-row');
       const volumeCellStyle = comp.fat
-        ? 'text-align:center; font-weight:600; color:#dc2626;'
-        : 'text-align:center; font-weight:600;';
+        ? 'text-align:center;font-weight:600;color:#dc2626;'
+        : 'text-align:center;font-weight:600;';
       row.innerHTML = `
         <td>${comp.name}</td>
         <td style="text-align:center;"><span class="input-badge">${comp.input}</span></td>
         <td style="${volumeCellStyle}">${comp.volume} ml</td>
-        <td style="text-align:center; font-size:8pt;">${comp.note || ''}</td>
+        <td style="text-align:center;font-size:8pt;">${comp.note || ''}</td>
       `;
       tbody.appendChild(row);
     });
 
     // Summary
-    const bwNum     = parseFloat(String(data.bw).replace(/[^0-9.]/g, '')) || 0;
-    const pnCalKg   = parseFloat(String(data.pnCalKg).replace(/[^0-9.]/g, '')) || 0;
-    const pnCalDay  = bwNum * pnCalKg;
+    const bwNum = parseFloat(String(data.bw).replace(/[^0-9.]/g, '')) || 0;
+    const pnCalKg = parseFloat(String(data.pnCalKg).replace(/[^0-9.]/g, '')) || 0;
+    const pnCalPerDay = bwNum * pnCalKg;
     document.getElementById('display-pn-cal').textContent =
-      isFinite(pnCalDay) ? pnCalDay.toFixed(0) : '0';
+      isFinite(pnCalPerDay) ? pnCalPerDay.toFixed(0) : '0';
 
-    const osmolValue = data.totalOsmol ? String(data.totalOsmol).replace('~','') : '0';
-    const osmolNum   = parseInt(osmolValue || '0', 10);
+    const osmolValue = data.totalOsmol ? String(data.totalOsmol).replace('~', '') : '0';
+    const osmolNum = parseInt(osmolValue || '0', 10);
     document.getElementById('display-osmol').textContent = '~' + osmolValue;
     const osmolNoteEl = document.getElementById('osmol-note');
     if (osmolNum > 900) {
@@ -763,8 +786,8 @@
       osmolNoteEl.classList.add('osmol-ok');
     }
 
-    document.getElementById('display-pn-total').textContent    = data.pnCalKg    || '0';
-    document.getElementById('display-milk-total').textContent  = data.milkCalKg  || '0';
+    document.getElementById('display-pn-total').textContent   = data.pnCalKg   || '0';
+    document.getElementById('display-milk-total').textContent = data.milkCalKg || '0';
     document.getElementById('display-grand-total').textContent = data.totalCalKg || '0';
 
     // Generated date
@@ -778,8 +801,15 @@
     });
     document.getElementById('generated-date').textContent = dateStr;
 
+    function toggleExporting(enable) {
+      const root = document.getElementById('report-root');
+      if (enable) root.classList.add('exporting');
+      else root.classList.remove('exporting');
+    }
+
     async function saveAsImage() {
       const root = document.getElementById('report-root');
+      toggleExporting(true);
       await new Promise(r => requestAnimationFrame(r));
 
       const canvas = await html2canvas(root, {
@@ -787,6 +817,8 @@
         useCORS: true,
         backgroundColor: '#ffffff'
       });
+
+      toggleExporting(false);
 
       const dataUrl = canvas.toDataURL('image/png');
       const img = document.getElementById('report-image');
@@ -802,12 +834,15 @@
     }
 
     function printScaled() {
+      const root = document.getElementById('report-root');
+      root.classList.add('scale-80-print');
       window.print();
+      setTimeout(() => root.classList.remove('scale-80-print'), 500);
     }
 
     window.saveAsImage     = saveAsImage;
     window.closeImageViewer = closeImageViewer;
-    window.printScaled      = printScaled;
+    window.printScaled     = printScaled;
   </script>
 </body>
 </html>
