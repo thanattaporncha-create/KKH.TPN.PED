@@ -1440,9 +1440,7 @@
   // ========== Patient Sticker Camera Feature ==========
 (function initStickerCamera() {
   const openCameraBtn = document.getElementById('openCameraBtn');
-  const uploadStickerBtn = document.getElementById('uploadStickerBtn');
   const clearStickerBtn = document.getElementById('clearStickerBtn');
-  const stickerFileInput = document.getElementById('stickerFileInput');
   const cameraModal = document.getElementById('cameraModal');
   const cameraVideo = document.getElementById('cameraVideo');
   const cameraCanvas = document.getElementById('cameraCanvas');
@@ -1450,39 +1448,73 @@
   const closeCameraBtn = document.getElementById('closeCameraBtn');
   const stickerPreviewContainer = document.getElementById('stickerPreviewContainer');
   const stickerPreview = document.getElementById('stickerPreview');
+  const toggleManualInputBtn = document.getElementById('toggleManualInputBtn');
+  const manualInputSection = document.getElementById('manualInputSection');
+  const toggleIcon = document.getElementById('toggleIcon');
   
   let currentStream = null;
   let stickerImageData = null;
 
+  // ✅ Toggle แสดง/ซ่อน ส่วนกรอกข้อมูลเอง
+  if (toggleManualInputBtn) {
+    toggleManualInputBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const isHidden = manualInputSection.style.display === 'none' || !manualInputSection.style.display;
+      manualInputSection.style.display = isHidden ? 'block' : 'none';
+      toggleIcon.textContent = isHidden ? '▲' : '▼';
+      this.style.background = isHidden ? '#e0f2fe' : '#f8fafc';
+      this.style.borderColor = isHidden ? '#4facfe' : '#e2e8f0';
+      
+      console.log('Toggle clicked, now:', isHidden ? 'OPEN' : 'CLOSED');
+    });
+  }
+
   // เปิดกล้อง
-  openCameraBtn?.addEventListener('click', async function() {
-    try {
-      currentStream = await navigator.mediaDevices.getUserMedia({ 
-        video: { facingMode: 'environment' } // ใช้กล้องหลัง
-      });
-      cameraVideo.srcObject = currentStream;
-      cameraModal.style.display = 'flex';
-    } catch(err) {
-      alert('❌ ไม่สามารถเปิดกล้องได้: ' + err.message);
-    }
-  });
+  if (openCameraBtn) {
+    openCameraBtn.addEventListener('click', async function(e) {
+      e.preventDefault();
+      try {
+        currentStream = await navigator.mediaDevices.getUserMedia({ 
+          video: { 
+            facingMode: 'environment',
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          } 
+        });
+        cameraVideo.srcObject = currentStream;
+        cameraModal.style.display = 'flex';
+      } catch(err) {
+        alert('❌ ไม่สามารถเปิดกล้องได้: ' + err.message);
+      }
+    });
+  }
 
   // ถ่ายรูป
-  captureBtn?.addEventListener('click', function() {
-    const context = cameraCanvas.getContext('2d');
-    cameraCanvas.width = cameraVideo.videoWidth;
-    cameraCanvas.height = cameraVideo.videoHeight;
-    context.drawImage(cameraVideo, 0, 0);
-    
-    const imageDataUrl = cameraCanvas.toDataURL('image/jpeg', 0.9);
-    stickerImageData = imageDataUrl;
-    
-    showStickerPreview(imageDataUrl);
-    closeCamera();
-  });
+  if (captureBtn) {
+    captureBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const context = cameraCanvas.getContext('2d');
+      cameraCanvas.width = cameraVideo.videoWidth;
+      cameraCanvas.height = cameraVideo.videoHeight;
+      context.drawImage(cameraVideo, 0, 0);
+      
+      const imageDataUrl = cameraCanvas.toDataURL('image/jpeg', 0.9);
+      stickerImageData = imageDataUrl;
+      
+      showStickerPreview(imageDataUrl);
+      closeCamera();
+    });
+  }
 
   // ปิดกล้อง
-  closeCameraBtn?.addEventListener('click', closeCamera);
+  if (closeCameraBtn) {
+    closeCameraBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      closeCamera();
+    });
+  }
   
   function closeCamera() {
     if (currentStream) {
@@ -1492,74 +1524,60 @@
     cameraModal.style.display = 'none';
   }
 
-  // เลือกไฟล์
-  uploadStickerBtn?.addEventListener('click', function() {
-    stickerFileInput.click();
-  });
-
-  stickerFileInput?.addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        stickerImageData = event.target.result;
-        showStickerPreview(stickerImageData);
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-
   // แสดงตัวอย่าง
   function showStickerPreview(dataUrl) {
     stickerPreview.src = dataUrl;
     stickerPreviewContainer.style.display = 'block';
     clearStickerBtn.style.display = 'inline-flex';
     
-    // บันทึกลง autosave
-    autosaveCollect();
+    // บันทึกลง localStorage ทันที
+    const currentData = JSON.parse(localStorage.getItem(AUTOSAVE_KEY) || '{}');
+    currentData.stickerImage = dataUrl;
+    localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(currentData));
   }
 
   // ลบรูป
-  clearStickerBtn?.addEventListener('click', function() {
+  if (clearStickerBtn) {
+    clearStickerBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (!confirm('ต้องการลบรูป Sticker ใช่หรือไม่?')) return;
+      
+      clearStickerImage();
+    });
+  }
+
+  function clearStickerImage() {
     stickerImageData = null;
     stickerPreview.src = '';
     stickerPreviewContainer.style.display = 'none';
     clearStickerBtn.style.display = 'none';
-    stickerFileInput.value = '';
-    autosaveCollect();
-  });
-
-  // เพิ่มในฟังก์ชัน autosaveCollect (ค้นหาฟังก์ชันนี้และเพิ่ม)
-  const originalAutosaveCollect = window.autosaveCollect;
-  window.autosaveCollect = function() {
-    if (originalAutosaveCollect) originalAutosaveCollect();
-    const data = JSON.parse(localStorage.getItem(AUTOSAVE_KEY) || '{}');
-    data.stickerImage = stickerImageData;
-    localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(data));
-  };
-
-  // เพิ่มในฟังก์ชัน autosaveRestore (ค้นหาและเพิ่ม)
-  const originalAutosaveRestore = window.autosaveRestore;
-  window.autosaveRestore = function() {
-    if (originalAutosaveRestore) originalAutosaveRestore();
-    try {
-      const data = JSON.parse(localStorage.getItem(AUTOSAVE_KEY) || '{}');
-      if (data.stickerImage) {
-        stickerImageData = data.stickerImage;
-        showStickerPreview(stickerImageData);
-      }
-    } catch(e) {}
-  };
-
-  // ส่งข้อมูลรูปไป report
-  const originalSubmitBtn = document.getElementById('submitBtn');
-  if (originalSubmitBtn) {
-    originalSubmitBtn.addEventListener('click', function() {
-      const reportData = JSON.parse(localStorage.getItem('tpnReportData') || '{}');
-      reportData.stickerImage = stickerImageData;
-      localStorage.setItem('tpnReportData', JSON.stringify(reportData));
-    }, { capture: true });
+    
+    // ลบจาก localStorage
+    const currentData = JSON.parse(localStorage.getItem(AUTOSAVE_KEY) || '{}');
+    delete currentData.stickerImage;
+    localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(currentData));
   }
+
+  // Restore รูปจาก autosave
+  try {
+    const savedData = JSON.parse(localStorage.getItem(AUTOSAVE_KEY) || '{}');
+    if (savedData.stickerImage) {
+      stickerImageData = savedData.stickerImage;
+      showStickerPreview(stickerImageData);
+    }
+  } catch(e) {}
+
+  // Export ฟังก์ชัน
+  window.hasStickerImage = function() {
+    return !!stickerImageData;
+  };
+  
+  window.getStickerImage = function() {
+    return stickerImageData;
+  };
+  
+  // ✅ Export ฟังก์ชันลบรูป (สำหรับปุ่ม Clear Data)
+  window.clearStickerImage = clearStickerImage;
 })();
 </script>
 </body>
