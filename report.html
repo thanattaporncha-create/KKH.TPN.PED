@@ -743,37 +743,52 @@
         }
 
         async function saveAsImage() {
-    const root = document.getElementById('report-root');
+            const root = document.getElementById('report-root');
 
-    // เข้าโหมด export ให้ layout สวยก่อนถ่าย
-    toggleExporting(true);
-    await new Promise(r => requestAnimationFrame(r));
+            // เข้าโหมด export ให้ layout สวยก่อนถ่าย
+            toggleExporting(true);
+            await new Promise(r => requestAnimationFrame(r));
 
-    // ดันความละเอียดให้สูงขึ้นอีก
-    const dpr = window.devicePixelRatio || 2;
-    // เช่น iPhone dpr = 3 → scale = min(3 * 2, 4.5) = 4
-    const scale = Math.min(dpr * 2, 4.5);
+            // ดันความละเอียดสูงสุดตามที่ขิมขอ: scale = 5
+            const canvas = await html2canvas(root, {
+                scale: 5,
+                useCORS: true,
+                backgroundColor: '#ffffff',
+                scrollX: 0,
+                scrollY: -window.scrollY,
+                windowWidth: document.documentElement.scrollWidth,
+                windowHeight: document.documentElement.scrollHeight
+            });
 
-    const canvas = await html2canvas(root, {
-        scale: scale,
-        useCORS: true,
-        backgroundColor: '#ffffff',
-        scrollX: 0,
-        scrollY: -window.scrollY,
-        windowWidth: document.documentElement.scrollWidth,
-        windowHeight: document.documentElement.scrollHeight
-    });
+            toggleExporting(false);
 
-    toggleExporting(false);
+            const dataUrl = canvas.toDataURL('image/png');
+            const img = document.getElementById('report-image');
+            const viewer = document.getElementById('image-viewer');
 
-    const dataUrl = canvas.toDataURL('image/png');
-    const img = document.getElementById('report-image');
-    const viewer = document.getElementById('image-viewer');
+            img.src = dataUrl;
+            viewer.classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
 
-    img.src = dataUrl;
-    viewer.classList.remove('hidden');
-    window.scrollTo(0, 0);
-}
+        function closeImageViewer() {
+            const viewer = document.getElementById('image-viewer');
+            viewer.classList.add('hidden');
+        }
+
+        function printScaled() {
+            const root = document.getElementById('report-root');
+            root.classList.add('scale-80-print');
+            window.print();
+            setTimeout(() => {
+                root.classList.remove('scale-80-print');
+            }, 500);
+        }
+
+        // ผูกเข้า window เผื่อ browser เข้มงวดเรื่อง scope
+        window.saveAsImage = saveAsImage;
+        window.closeImageViewer = closeImageViewer;
+        window.printScaled = printScaled;
     </script>
 </body>
 </html>
