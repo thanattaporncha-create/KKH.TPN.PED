@@ -255,8 +255,9 @@
             font-size: 11px;
             text-align: right;
         }
+
+        /* 🔍 ตรงนี้คือจุดที่แก้ — เอา width:900px ออก ให้ใช้ max-width อย่างเดียว */
         .image-viewer img {
-            width: 900px;
             max-width: 100%;
             height: auto;
             display: block;
@@ -437,7 +438,6 @@
     <script>
         function goBack() { window.location.href = 'index.html'; }
 
-        // ปัดแบบพิเศษ 2 ตำแหน่ง (เหมือน r2 ใน index.html) สำหรับ fallback Mg
         function specialRound2(v){
             const n = Number(v);
             if (!isFinite(n) || n === 0) return '0.00';
@@ -447,22 +447,20 @@
             return out.toFixed(2);
         }
 
-        // Load data จาก localStorage
         const data = JSON.parse(localStorage.getItem('tpnReportData') || '{}');
 
-        // ✨ แสดงรูป Sticker ถ้ามี
+        // Sticker
         if (data.stickerImage) {
             const stickerContainer = document.getElementById('sticker-container');
             const stickerFrame = document.getElementById('sticker-frame');
             stickerFrame.style.backgroundImage = `url(${data.stickerImage})`;
             stickerContainer.style.display = 'block';
 
-            // ซ่อนข้อมูล HN, Name, Ward ถ้าใช้รูป Sticker
             if (!data.hn && !data.name && !data.ward) {
                 const infoItems = document.querySelectorAll('#patient-info-text .info-item');
-                if (infoItems[0]) infoItems[0].style.display = 'none'; // HN
-                if (infoItems[1]) infoItems[1].style.display = 'none'; // Name
-                if (infoItems[2]) infoItems[2].style.display = 'none'; // Ward
+                if (infoItems[0]) infoItems[0].style.display = 'none';
+                if (infoItems[1]) infoItems[1].style.display = 'none';
+                if (infoItems[2]) infoItems[2].style.display = 'none';
             }
         }
 
@@ -472,7 +470,7 @@
         document.getElementById('display-ward').textContent = data.ward || '-';
         document.getElementById('display-bw').textContent = data.bw ? `${data.bw} kg` : '-';
 
-        // Order date (B.E.) + Day-of-week
+        // Order date
         let displayDate = data.orderDate || '-';
         let dayNameText = data.orderDayName || '-';
         if (data.orderDate && data.orderDate !== '-') {
@@ -489,7 +487,7 @@
         document.getElementById('display-order-date').textContent = displayDate;
         document.getElementById('display-day-name').textContent = dayNameText;
 
-        // Route badge
+        // Route
         const routeBadge = document.getElementById('display-route');
         routeBadge.textContent = (data.route === 'central') ? 'Central Line' : 'Peripheral Line';
         if (data.route === 'peripheral') routeBadge.classList.add('peripheral');
@@ -573,7 +571,6 @@
             });
         }
 
-        // MgSO4: 2 ตำแหน่ง
         (function handleMg() {
             const mgRawStr = (data.mgVol !== undefined && data.mgVol !== null && String(data.mgVol).trim() !== '')
                 ? String(data.mgVol).replace(/[^0-9.\-]/g, '')
@@ -600,7 +597,6 @@
             }
         })();
 
-        // Micronutrients
         const peditVol = data.peditrace ? parseFloat(String(data.peditrace).replace(/[^0-9.]/g, '')) : 0;
         if (peditVol > 0) {
             let peditNote = '';
@@ -635,7 +631,6 @@
             });
         }
 
-        // Vitamin K
         if (data.vitKChoice === 'daily') {
             const vitKVol = data.vitKDaily ? parseFloat(String(data.vitKDaily).replace(/[^0-9.]/g, '')) : 0;
             if (vitKVol > 0) {
@@ -660,7 +655,6 @@
             }
         }
 
-        // 20% Fat + 6 ml
         const fatVolNum = data.fatVol ? parseFloat(String(data.fatVol).replace(/[^0-9.]/g, '')) : 0;
         if (fatVolNum > 0) {
             const fatVolPlus6 = (fatVolNum + 6).toFixed(1);
@@ -673,7 +667,6 @@
             });
         }
 
-        // Sterile Water ท้ายสุด
         if (parseFloat(data.sterileWater) > 0) {
             compositions.push({
                 name: 'Sterile Water',
@@ -684,7 +677,6 @@
             });
         }
 
-        // เติมตาราง
         compositions.forEach(comp => {
             const row = document.createElement('tr');
             if (comp.highlight) row.classList.add('highlight-row');
@@ -700,7 +692,6 @@
             tbody.appendChild(row);
         });
 
-        // Summary
         const bwNum = parseFloat(String(data.bw).replace(/[^0-9.]/g, '')) || 0;
         const pnCalKg = parseFloat(String(data.pnCalKg).replace(/[^0-9.]/g, '')) || 0;
         const pnCalPerDay = bwNum * pnCalKg;
@@ -724,7 +715,6 @@
         document.getElementById('display-milk-total').textContent = data.milkCalKg || '0';
         document.getElementById('display-grand-total').textContent = data.totalCalKg || '0';
 
-        // Generated date
         const now = new Date();
         const dateStr = now.toLocaleDateString('th-TH', {
             year: 'numeric',
@@ -735,7 +725,6 @@
         });
         document.getElementById('generated-date').textContent = dateStr;
 
-        // ฟังก์ชันสำหรับโหมด export / print
         function toggleExporting(enable) {
             const root = document.getElementById('report-root');
             if (enable) root.classList.add('exporting');
@@ -744,12 +733,9 @@
 
         async function saveAsImage() {
             const root = document.getElementById('report-root');
-
-            // เข้าโหมด export ให้ layout สวยก่อนถ่าย
             toggleExporting(true);
             await new Promise(r => requestAnimationFrame(r));
 
-            // ดันความละเอียดสูงสุดตามที่ขิมขอ: scale = 5
             const canvas = await html2canvas(root, {
                 scale: 5,
                 useCORS: true,
@@ -772,8 +758,7 @@
         }
 
         function closeImageViewer() {
-            const viewer = document.getElementById('image-viewer');
-            viewer.classList.add('hidden');
+            document.getElementById('image-viewer').classList.add('hidden');
         }
 
         function printScaled() {
@@ -785,7 +770,6 @@
             }, 500);
         }
 
-        // ผูกเข้า window เผื่อ browser เข้มงวดเรื่อง scope
         window.saveAsImage = saveAsImage;
         window.closeImageViewer = closeImageViewer;
         window.printScaled = printScaled;
