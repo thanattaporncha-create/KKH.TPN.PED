@@ -743,41 +743,35 @@
         }
 
         async function saveAsImage() {
-            const root = document.getElementById('report-root');
-            toggleExporting(true);
-            await new Promise(r => requestAnimationFrame(r));
+    const root = document.getElementById('report-root');
 
-            const canvas = await html2canvas(root, {
-                scale: 2,
-                useCORS: true,
-                backgroundColor: '#ffffff'
-            });
+    // ปรับ layout เข้าโหมด export (ถ้ามี class exporting ก็ใช้ร่วมได้)
+    toggleExporting(true);
+    await new Promise(r => requestAnimationFrame(r));
 
-            toggleExporting(false);
+    // ใช้ scale ตามหน้าจอ (เช่น iPhone = 3) แต่ไม่เกิน 3 ป้องกันแครช
+    const scale = Math.min(window.devicePixelRatio || 2, 3);
 
-            const dataUrl = canvas.toDataURL('image/png');
-            const img = document.getElementById('report-image');
-            const viewer = document.getElementById('image-viewer');
+    const canvas = await html2canvas(root, {
+        scale: scale,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        scrollX: 0,
+        scrollY: -window.scrollY,   // กัน Safari ขยับภาพ
+        windowWidth: document.documentElement.scrollWidth,
+        windowHeight: document.documentElement.scrollHeight
+    });
 
-            img.src = dataUrl;
-            viewer.classList.remove('hidden');
-            window.scrollTo(0, 0);
-        }
+    toggleExporting(false);
 
-        function closeImageViewer() {
-            document.getElementById('image-viewer').classList.add('hidden');
-        }
+    const dataUrl = canvas.toDataURL('image/png');
+    const img = document.getElementById('report-image');
+    const viewer = document.getElementById('image-viewer');
 
-        function printScaled() {
-            const root = document.getElementById('report-root');
-            root.classList.add('scale-80-print');
-            window.print();
-            setTimeout(() => root.classList.remove('scale-80-print'), 500);
-        }
-
-        window.saveAsImage = saveAsImage;
-        window.closeImageViewer = closeImageViewer;
-        window.printScaled = printScaled;
+    img.src = dataUrl;
+    viewer.classList.remove('hidden');
+    window.scrollTo(0, 0);
+}
     </script>
 </body>
 </html>
