@@ -22,13 +22,13 @@
         }
 
         /* กล่องหลักของรายงาน: ขนาดใกล้เคียง A4 แนวตั้ง */
-   .report-container {
-    width: 820px;        /* หุบความกว้างลงนิดนึง */
-    min-width: 820px;
-    margin: 0 auto;
-    background: white;
-    padding: 16px 18px;  /* ลด padding ซ้าย-ขวาเล็กน้อย */
-}
+        .report-container {
+            width: 820px;        /* หุบความกว้างลงนิดนึง */
+            min-width: 820px;
+            margin: 0 auto;
+            background: white;
+            padding: 16px 18px;  /* ลด padding ซ้าย-ขวาเล็กน้อย */
+        }
 
         /* ครอบ report ทั้งใบ เอาไว้ให้มือถือเลื่อนซ้าย-ขวาได้ ถ้าจอแคบกว่ากระดาษ */
         .scale-wrap {
@@ -38,7 +38,10 @@
         }
 
         /* ====== สเกล 80% สำหรับ export/print (ยังเก็บไว้ เผื่อใช้กับ print) ====== */
-        .scale-80 { transform: scale(0.8); transform-origin: top left; }
+        .scale-80 { 
+            transform: scale(0.8); 
+            transform-origin: top left; 
+        }
 
         .header {
             text-align: left;
@@ -66,12 +69,12 @@
             margin-bottom: 6px;
         }
 
-        ..info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px 12px;   /* ช่องว่างระหว่างซ้าย-ขวาแคบลง */
-    margin-bottom: 8px;
-}
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 12px;   /* ช่องว่างระหว่างซ้าย-ขวาแคบลง */
+            margin-bottom: 8px;
+        }
         .info-item { display: flex; align-items: baseline; gap: 6px; }
         .info-label { font-weight: 600; color: #2d3748; min-width: 90px; flex-shrink: 0; }
         .info-value { color: #4a5568; flex: 1; }
@@ -199,17 +202,19 @@
                 padding: 8px 12px;
                 font-size: 11px;
             }
-        
-@media (max-width: 768px) {
-    #sticker-container {
-        grid-column: 1 / -1;
-        margin-bottom: 15px;
-    }
-    
-    .section > div[style*="grid-template-columns"] {
-        grid-template-columns: 1fr !important;
-    }
-}
+        }
+
+        @media (max-width: 768px) {
+            #sticker-container {
+                grid-column: 1 / -1;
+                margin-bottom: 15px;
+            }
+            
+            .section > div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
         /* ============= โหมด export เท่านั้น ============= */
         #report-root.exporting .header {
             display: flex;
@@ -318,27 +323,36 @@
               </div>
           </div>
 
- <!-- Patient Information -->
-<div class="section">
-    <div class="section-title">👤 Patient Information</div>
-    
-    <div style="display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: start;">
-      <!-- ข้อมูลผู้ป่วย (ซ้าย) -->
-      <div class="info-grid" id="patient-info-text">
-          <div class="info-item"><span class="info-label">HN:</span><span class="info-value" id="display-hn"></span></div>
-          <div class="info-item"><span class="info-label">Name:</span><span class="info-value" id="display-name"></span></div>
-          <div class="info-item"><span class="info-label">Ward:</span><span class="info-value" id="display-ward"></span></div>
-          <div class="info-item"><span class="info-label">Body Weight:</span><span class="info-value" id="display-bw"></span></div>
-          <div class="info-item"><span class="info-label">Route:</span><span class="info-value"><span class="route-badge" id="display-route"></span></span></div>
-      </div>
-      
-      <!-- รูป Sticker (ขวา) -->
-      <div id="sticker-container" style="display: none; text-align: center; padding: 12px; background: #f8fafc; border-radius: 8px; border: 2px solid #4facfe;">
-        <p style="font-weight: 600; color: #2d3748; margin-bottom: 8px; font-size: 0.9em;">📋 Patient Sticker</p>
-        <img id="sticker-image" src="" alt="Patient Sticker" style="width: 200px; height: 160px; object-fit: contain; border: 2px solid #e2e8f0; border-radius: 4px; background: white;">
-      </div>
-    </div>
-</div>
+          <!-- Patient Information -->
+          <div class="section">
+              <div class="section-title">👤 Patient Information</div>
+              
+              <div style="display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: start;">
+                <!-- ข้อมูลผู้ป่วย (ซ้าย) -->
+                <div class="info-grid" id="patient-info-text">
+                    <div class="info-item"><span class="info-label">HN:</span><span class="info-value" id="display-hn"></span></div>
+                    <div class="info-item"><span class="info-label">Name:</span><span class="info-value" id="display-name"></span></div>
+                    <div class="info-item"><span class="info-label">Ward:</span><span class="info-value" id="display-ward"></span></div>
+                    <div class="info-item"><span class="info-label">Body Weight:</span><span class="info-value" id="display-bw"></span></div>
+                    <div class="info-item"><span class="info-label">Route:</span><span class="info-value"><span class="route-badge" id="display-route"></span></span></div>
+                </div>
+                
+                <!-- รูป Sticker (ขวา) -->
+                <div id="sticker-container" style="display: none; text-align: center; padding: 12px; background: #f8fafc; border-radius: 8px; border: 2px solid #4facfe;">
+                  <p style="font-weight: 600; color: #2d3748; margin-bottom: 8px; font-size: 0.9em;">📋 Patient Sticker</p>
+                  <img id="sticker-image" src="" alt="Patient Sticker"
+                       style="
+                          width: 5cm;          /* ให้กว้างประมาณ 5 ซม. */
+                          max-width: 230px;    /* กันล้นบนจอมือถือเล็ก */
+                          height: auto;        /* ไม่บีบรูปจากด้านบน/ล่าง */
+                          object-fit: contain;
+                          border: 2px solid #e2e8f0;
+                          border-radius: 4px;
+                          background: white;
+                       ">
+                </div>
+              </div>
+          </div>
 
           <!-- TPN Configuration -->
           <div class="section">
@@ -422,29 +436,29 @@
         }
 
         // Load data จาก localStorage
-const data = JSON.parse(localStorage.getItem('tpnReportData') || '{}');
+        const data = JSON.parse(localStorage.getItem('tpnReportData') || '{}');
 
-// ✨ แสดงรูป Sticker ถ้ามี
-if (data.stickerImage) {
-    const stickerContainer = document.getElementById('sticker-container');
-    const stickerImage = document.getElementById('sticker-image');
-    stickerImage.src = data.stickerImage;
-    stickerContainer.style.display = 'block';
-    
-    // ซ่อนข้อมูล HN, Name, Ward ถ้าใช้รูป Sticker
-    if (!data.hn && !data.name && !data.ward) {
-        const infoItems = document.querySelectorAll('#patient-info-text .info-item');
-        infoItems[0].style.display = 'none'; // HN
-        infoItems[1].style.display = 'none'; // Name
-        infoItems[2].style.display = 'none'; // Ward
-    }
-}
+        // ✨ แสดงรูป Sticker ถ้ามี
+        if (data.stickerImage) {
+            const stickerContainer = document.getElementById('sticker-container');
+            const stickerImage = document.getElementById('sticker-image');
+            stickerImage.src = data.stickerImage;
+            stickerContainer.style.display = 'block';
+            
+            // ซ่อนข้อมูล HN, Name, Ward ถ้าใช้รูป Sticker แทน
+            if (!data.hn && !data.name && !data.ward) {
+                const infoItems = document.querySelectorAll('#patient-info-text .info-item');
+                infoItems[0].style.display = 'none'; // HN
+                infoItems[1].style.display = 'none'; // Name
+                infoItems[2].style.display = 'none'; // Ward
+            }
+        }
 
-// Patient info
-document.getElementById('display-hn').textContent = data.hn || '-';
-document.getElementById('display-name').textContent = data.name || '-';
-document.getElementById('display-ward').textContent = data.ward || '-';
-document.getElementById('display-bw').textContent = data.bw ? `${data.bw} kg` : '-';
+        // Patient info
+        document.getElementById('display-hn').textContent = data.hn || '-';
+        document.getElementById('display-name').textContent = data.name || '-';
+        document.getElementById('display-ward').textContent = data.ward || '-';
+        document.getElementById('display-bw').textContent = data.bw ? `${data.bw} kg` : '-';
         
         // Order date (B.E.) + Day-of-week
         let displayDate = data.orderDate || '-';
@@ -478,7 +492,7 @@ document.getElementById('display-bw').textContent = data.bw ? `${data.bw} kg` : 
 
         if (parseFloat(data.proteinVol) > 0) {
             compositions.push({
-                name: data.proteinProduct || '10% Aminoven® infant',  // ✅ ดึงจาก index
+                name: data.proteinProduct || '10% Aminoven® infant',
                 input: `${data.protein || '0'} g/kg/day`,
                 volume: data.proteinVol,
                 note: ''
@@ -639,7 +653,7 @@ document.getElementById('display-bw').textContent = data.bw ? `${data.bw} kg` : 
         if (fatVolNum > 0) {
             const fatVolPlus6 = (fatVolNum + 6).toFixed(1);
             compositions.push({
-                name: data.fatProduct || '20% SMOF lipid',  // ✅ ดึงจาก index
+                name: data.fatProduct || '20% SMOF lipid',
                 input: `${data.fat || '0'} g/kg/day`,
                 volume: fatVolPlus6,
                 note: '(+ 6ml เผื่อไล่สายแล้ว) IV drip in 24 hr.',
