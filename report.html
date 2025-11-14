@@ -199,8 +199,17 @@
                 padding: 8px 12px;
                 font-size: 11px;
             }
-        }
-
+        
+@media (max-width: 768px) {
+    #sticker-container {
+        grid-column: 1 / -1;
+        margin-bottom: 15px;
+    }
+    
+    .section > div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+    }
+}
         /* ============= โหมด export เท่านั้น ============= */
         #report-root.exporting .header {
             display: flex;
@@ -308,17 +317,6 @@
                   <div class="day-badge" id="display-day-name"></div>
               </div>
           </div>
-
-          @media (max-width: 768px) {
-    #sticker-container {
-        grid-column: 1 / -1;
-        margin-bottom: 15px;
-    }
-    
-    .section > div[style*="grid-template-columns"] {
-        grid-template-columns: 1fr !important;
-    }
-}
 
  <!-- Patient Information -->
 <div class="section">
