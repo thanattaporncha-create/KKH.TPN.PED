@@ -2103,18 +2103,56 @@
                 });
             }
 
-            // Capture photo
-            if (captureBtn) {
-                captureBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const context = cameraCanvas.getContext('2d');
-                    cameraCanvas.width = cameraVideo.videoWidth;
-                    cameraCanvas.height = cameraVideo.videoHeight;
-                    context.drawImage(cameraVideo, 0, 0);
-                    const imageDataUrl = cameraCanvas.toDataURL('image/jpeg', 0.9);
-                    stickerImageData = imageDataUrl;
-                    showStickerPreview(imageDataUrl);
-                    closeCamera();
+            // Capture photo (hi-res, crop กลางเฟรม + PNG)
+if (captureBtn) {
+    captureBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        const videoW = cameraVideo.videoWidth;
+        const videoH = cameraVideo.videoHeight;
+        if (!videoW || !videoH) {
+            alert('❌ กล้องยังไม่พร้อม ลองกดถ่ายซ้ำอีกครั้งนะคะ');
+            return;
+        }
+
+        const ctx = cameraCanvas.getContext('2d');
+
+        // อัตราส่วนกรอบ 5cm x 3cm ≈ 5:3
+        const frameAspect = 5 / 3;
+
+        // คำนวณพื้นที่ที่จะ crop จากกลางจอ
+        let cropW = videoW;
+        let cropH = Math.round(cropW / frameAspect);
+        if (cropH > videoH) {
+            cropH = videoH;
+            cropW = Math.round(cropH * frameAspect);
+        }
+
+        const sx = Math.round((videoW - cropW) / 2);
+        const sy = Math.round((videoH - cropH) / 2);
+
+        // ขยายความละเอียดขึ้น (ไม่กระทบ layout เพราะเราแค่เก็บเป็นไฟล์ใหญ่ขึ้น)
+        const scaleFactor = 2; // จะได้รูปใหญ่ขึ้น ~2 เท่าจาก crop จริง
+        cameraCanvas.width = cropW * scaleFactor;
+        cameraCanvas.height = cropH * scaleFactor;
+
+        ctx.drawImage(
+            cameraVideo,
+            sx, sy,      // เริ่ม crop ตรงกลาง
+            cropW, cropH, // ขนาดที่ crop จากวิดีโอ
+            0, 0,
+            cameraCanvas.width, cameraCanvas.height // วาดลง canvas ขยาย
+        );
+
+        // ใช้ PNG คุณภาพเต็ม เพื่อลดการแตกของรูป
+        const imageDataUrl = cameraCanvas.toDataURL('image/png', 1.0);
+
+        stickerImageData = imageDataUrl;
+        showStickerPreview(imageDataUrl);
+        closeCamera();
+    });
+}
+
                 });
             }
 
