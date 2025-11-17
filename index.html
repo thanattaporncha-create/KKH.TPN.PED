@@ -168,13 +168,13 @@
 <!-- Patient Info -->
 <section class="section">
   <h2>ข้อมูลผู้ป่วย</h2>
-  
+
   <!-- 📸 ส่วนถ่ายรูป Sticker -->
   <div style="margin-bottom: 20px;">
     <h3 style="color: #2d3748; font-size: 1.05em; font-weight: 600; margin-bottom: 12px;">
       📸 ถ่ายรูป Patient Sticker
     </h3>
-    
+
     <!-- ปุ่มเปิดกล้อง + ลบรูป -->
     <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
       <button type="button" id="openCameraBtn" class="btn" style="background: #10b981; padding: 12px 20px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(16,185,129,0.4);">
@@ -184,19 +184,20 @@
         🗑️ ลบรูป
       </button>
     </div>
-    
+
     <!-- แสดงตัวอย่างรูปที่ถ่าย -->
     <div id="stickerPreviewContainer" style="display: none; border: 2px dashed #4facfe; border-radius: 8px; padding: 15px; background: #f0f9ff; text-align: center;">
       <p style="margin-bottom: 10px; font-weight: 600; color: #0369a1;">✅ รูป Patient Sticker:</p>
       <img id="stickerPreview" src="" alt="Patient Sticker" style="max-width: 200px; max-height: 160px; border: 2px solid #e2e8f0; border-radius: 4px; background: white;">
     </div>
-    
+
     <!-- Video สำหรับกล้อง (Modal) -->
     <div id="cameraModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; padding: 20px;">
       <div style="background: white; border-radius: 12px; padding: 20px; max-width: 90%; max-height: 90%; overflow: auto;">
         <h3 style="margin-bottom: 15px; text-align: center; color: #2d3748;">📸 ถ่ายรูป Patient Sticker</h3>
-        <p style="text-align: center; color: #64748b; margin-bottom: 15px; font-size: 0.9em;">วางสติกเกอร์ให้อยู่ในกรอบแล้วกดถ่ายรูป</        <!-- กรอบถ่ายภาพ 5 x 3 cm แนวนอน -->
-        <div id="cameraFrame" 
+        <p style="text-align: center; color: #64748b; margin-bottom: 15px; font-size: 0.9em;">วางสติกเกอร์ให้อยู่ในกรอบแล้วกดถ่ายรูป
+        <!-- กรอบถ่ายภาพ 5 x 3 cm แนวนอน -->
+        <div id="cameraFrame"
              style="width: 5cm; height: 3cm; border: 2px solid #e2e8f0; border-radius: 8px;
                     margin: 0 auto 15px auto; position: relative; overflow: hidden; background: #000;">
           <video id="cameraVideo" autoplay playsinline
@@ -218,14 +219,14 @@
       </div>
     </div>
   </div>
-  
+
   <!-- 📝 ส่วนกรอกข้อมูลเอง (ซ่อนไว้) -->
 <div style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
   <button type="button" id="toggleManualInputBtn" style="background: #f8fafc; border: 2px solid #e2e8f0; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; color: #4a5568; width: 100%; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s; font-family: 'Sarabun', 'Noto Sans Thai', Arial, sans-serif;">
     <span>📝 หรือกรอกข้อมูลเอง (ไม่ใช้รูป Sticker)</span>
     <span id="toggleIcon" style="font-size: 0.8em;">▼</span>
   </button>
-  
+
   <div id="manualInputSection" style="display: none; margin-top: 15px; padding: 15px; background: #f8fafc; border-radius: 8px; border: 2px solid #e2e8f0;">
     <div class="input-group">
       <div class="input-field">
@@ -252,7 +253,7 @@
     </div>
   </div>
 </div>
-  
+
   <!-- Route -->
       <div class="route-selection">
         <h3>Route การให้ TPN</h3>
@@ -744,12 +745,12 @@
   // ===== Auto Calculate Bag Volume =====
   function calculateBagVolume(rate) {
     if (!rate || rate <= 0) return 0;
-    
+
     const rawVolume = rate * 24 + 20;
-    
+
     // Round up to nearest 10
     const rounded = Math.ceil(rawVolume / 10) * 10;
-    
+
     return rounded;
   }
 
@@ -792,13 +793,13 @@
     const proteinProduct = document.querySelector('input[name="protein-product"]:checked')?.value;
     const label = document.getElementById('protein-label');
     if (!label) return;
-    
+
     const names = {
       'aminoven': '10% Aminoven® infant',
       'amiparen': '10% Amiparen®',
       'aminoplasmal': '15% Aminoplasmal®'
     };
-    
+
     label.textContent = names[proteinProduct] || '10% Aminoven® infant';
   }
 
@@ -806,12 +807,12 @@
     const fatProduct = document.querySelector('input[name="fat-product"]:checked')?.value;
     const label = document.getElementById('fat-label');
     if (!label) return;
-    
+
     const names = {
       'smof': '20% SMOF lipid',
       'intralipid': '20% Intralipid'
     };
-    
+
     label.textContent = names[fatProduct] || '20% SMOF lipid';
   }
 
@@ -875,7 +876,7 @@
       const vday = document.getElementById('vitamin-k-day'); if (vday) vday.value = data.vitKDay ?? '1';
 
       const picc = document.getElementById('picc-line-checkbox'); if (picc) picc.checked = !!data.hasPicc;
-      
+
       updateProteinLabel();
       updateFatLabel();
     } catch(e) { }
@@ -883,21 +884,21 @@
 
   function clearAllData() {
   if (!confirm('⚠️ คุณต้องการล้างข้อมูลทั้งหมดใช่หรือไม่?')) return;
-  
+
   const ids = ['patient-hn','patient-name','patient-ward','bw','rate','bag','protein','dextrose','fat','milk','total-milk','p','na','k','ca','mg'];
   ids.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
-  
+
   const dateEl = document.getElementById('order-date');
   if (dateEl) {
     const today = new Date();
-    dateEl.value = today.toISOString().split('T')[0];
+    dateEl.value = today.toISOString().split('T')[0](undefined);
   }
-  
+
   document.querySelector('input[name="tpn-route"][value="central"]')?.click();
-  
+
   // Reset product selections
   const aminovenRadio = document.querySelector('input[name="protein-product"][value="aminoven"]');
   if (aminovenRadio) {
@@ -905,37 +906,37 @@
     document.querySelectorAll('.product-option[data-product="protein"]').forEach(opt => opt.classList.remove('selected'));
     aminovenRadio.closest('.product-option').classList.add('selected');
   }
-  
+
   const smofRadio = document.querySelector('input[name="fat-product"][value="smof"]');
   if (smofRadio) {
     smofRadio.checked = true;
     document.querySelectorAll('.product-option[data-product="fat"]').forEach(opt => opt.classList.remove('selected'));
     smofRadio.closest('.product-option').classList.add('selected');
   }
-  
+
   document.querySelector('input[name="na-source"]')?.checked && (document.querySelector('input[name="na-source"]').checked = false);
   document.querySelector('input[name="k-source"]')?.checked && (document.querySelector('input[name="k-source"]').checked = false);
   document.querySelector('input[name="peditrace-freq"][value="daily"]')?.click();
   document.querySelector('input[name="cernevit-freq"][value="daily"]')?.click();
   document.querySelector('input[name="vitamin-k-choice"][value="daily"]')?.click();
-  
+
   const peditDay = document.getElementById('peditrace-day'); if (peditDay) peditDay.value = '1';
   const cernDay = document.getElementById('cernevit-day'); if (cernDay) cernDay.value = '1';
   const vitKDay = document.getElementById('vitamin-k-day'); if (vitKDay) vitKDay.value = '1';
-  
+
   const picc = document.getElementById('picc-line-checkbox'); if (picc) picc.checked = false;
-  
+
   // ✅ ลบรูป Sticker ด้วย
   if (window.clearStickerImage) {
     window.clearStickerImage();
   }
-  
+
   localStorage.removeItem(AUTOSAVE_KEY);
-  
+
   updateProteinLabel();
   updateFatLabel();
   calculateTPN();
-  
+
   alert('✅ ล้างข้อมูลเรียบร้อยแล้ว');
 }
 
@@ -956,25 +957,25 @@
     return days[d.getDay()];
   }
 
-  function r1(v){ 
-    if(!isFinite(v)||v===0) return 0; 
-    const h=Math.floor(v*100); 
-    const d2=h%10; 
-    return d2===9? Math.ceil(v*10)/10 : Math.floor(v*10)/10; 
+  function r1(v){
+    if(!isFinite(v)||v===0) return 0;
+    const h=Math.floor(v*100);
+    const d2=h%10;
+    return d2===9? Math.ceil(v*10)/10 : Math.floor(v*10)/10;
   }
-  
-  function r2(v){ 
-    if(!isFinite(v)||v===0) return 0; 
-    const h=Math.floor(v*1000); 
-    const d3=h%10; 
-    return d3===9? Math.ceil(v*100)/100 : Math.floor(v*100)/100; 
+
+  function r2(v){
+    if(!isFinite(v)||v===0) return 0;
+    const h=Math.floor(v*1000);
+    const d3=h%10;
+    return d3===9? Math.ceil(v*100)/100 : Math.floor(v*100)/100;
   }
-  
-  function r0(v){ 
-    if(!isFinite(v)||v===0) return 0; 
-    const m=v*10; 
-    const d1=Math.floor(m)%10; 
-    return d1===9? Math.ceil(v) : Math.floor(v); 
+
+  function r0(v){
+    if(!isFinite(v)||v===0) return 0;
+    const m=v*10;
+    const d1=Math.floor(m)%10;
+    return d1===9? Math.ceil(v) : Math.floor(v);
   }
 
   function calculateTPN(){
@@ -996,7 +997,7 @@
 
     // Get selected protein product
     const proteinProduct = document.querySelector('input[name="protein-product"]:checked')?.value || 'aminoven';
-    
+
     // Calculate protein volume based on product
     let proteinVol_raw;
     if (proteinProduct === 'aminoplasmal') {
@@ -1008,7 +1009,7 @@
       // Volume (ml) = (BW × protein × 100) / 10
       proteinVol_raw = (bw * protein * 100) / 10;
     }
-    
+
     const proteinCal_raw = bw*protein*4;
     const proteinOsm_raw = bag>0 ? (protein*bw*1000*10)/bag : 0;
 
@@ -1173,12 +1174,12 @@
       dailyEl.style.background = '#fef3c7';
       dailyEl.style.color = '#92400e';
       dailyEl.style.border = '1px solid #fcd34d';
-      if(dailyRadio){ 
-        dailyRadio.disabled=true; 
-        if(dailyOption){ 
-          dailyOption.style.opacity='0.5'; 
-          dailyOption.style.cursor='not-allowed'; 
-        } 
+      if(dailyRadio){
+        dailyRadio.disabled=true;
+        if(dailyOption){
+          dailyOption.style.opacity='0.5';
+          dailyOption.style.cursor='not-allowed';
+        }
       }
       // Auto-switch to weekly if daily is currently selected
       if(dailyRadio && dailyRadio.checked && weeklyRadio) {
@@ -1189,12 +1190,12 @@
       dailyEl.style.background = (vitKExceeded ? '#dc2626' : '#dbeafe');
       dailyEl.style.color = (vitKExceeded ? 'white' : '#1e40af');
       dailyEl.style.border = (vitKExceeded ? '1px solid #dc2626' : '1px solid #bfdbfe');
-      if(dailyRadio){ 
-        dailyRadio.disabled=false; 
-        if(dailyOption){ 
-          dailyOption.style.opacity='1'; 
-          dailyOption.style.cursor='pointer'; 
-        } 
+      if(dailyRadio){
+        dailyRadio.disabled=false;
+        if(dailyOption){
+          dailyOption.style.opacity='1';
+          dailyOption.style.cursor='pointer';
+        }
       }
     }
     weeklyEl.textContent = vitK_week_raw.toFixed(3) + ' ml';
@@ -1227,7 +1228,7 @@
     if (text === undefined || text === null) return '0';
     const s = String(text);
     const m = s.match(/-?\d+(\.\d+)?/);
-    return m ? m[0] : '0';
+    return m ? m[0](undefined) : '0';
   }
 
   function getProteinProductName() {
@@ -1253,7 +1254,7 @@
     const dateEl = document.getElementById('order-date');
     if (dateEl && !dateEl.value) {
       const today = new Date();
-      const dateStr = today.toISOString().split('T')[0];
+      const dateStr = today.toISOString().split('T')[0](undefined);
       dateEl.value = dateStr;
     }
 
@@ -1275,7 +1276,7 @@
     // Auto-calculate bag when rate changes
     const rateEl = document.getElementById('rate');
     const bagEl = document.getElementById('bag');
-    
+
     if (rateEl && bagEl) {
       rateEl.addEventListener('input', function() {
         const rate = parseFloat(this.value) || 0;
@@ -1350,7 +1351,7 @@
   const hn = document.getElementById('patient-hn')?.value.trim();
   const name = document.getElementById('patient-name')?.value.trim();
   const ward = document.getElementById('patient-ward')?.value.trim();
-  
+
   const hasManualData = hn && name && ward;
 
   // ต้องมีอย่างใดอย่างหนึ่ง: รูป Sticker หรือข้อมูลครบ
@@ -1376,7 +1377,7 @@
     route: document.querySelector('input[name="tpn-route"]:checked')?.value || 'central',
     proteinProduct: getProteinProductName(),
     fatProduct: getFatProductName(),
-    
+
     hn: hn || '',
     name: name || '',
     ward: ward || '',
@@ -1451,12 +1452,12 @@
 
   localStorage.setItem('tpnReportData', JSON.stringify(reportData));
   autosaveCollect();
-  
+
   console.log('✅ Report data saved, redirecting...');
   window.location.href = 'report.html';
 });
 
-  // ========== Patient Sticker Camera Feature ==========
+// ========== Patient Sticker Camera Feature ==========
 (function initStickerCamera() {
   const openCameraBtn = document.getElementById('openCameraBtn');
   const clearStickerBtn = document.getElementById('clearStickerBtn');
@@ -1470,7 +1471,7 @@
   const toggleManualInputBtn = document.getElementById('toggleManualInputBtn');
   const manualInputSection = document.getElementById('manualInputSection');
   const toggleIcon = document.getElementById('toggleIcon');
-  
+
   let currentStream = null;
   let stickerImageData = null;
 
@@ -1479,13 +1480,13 @@
     toggleManualInputBtn.addEventListener('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
-      
+
       const isHidden = manualInputSection.style.display === 'none' || !manualInputSection.style.display;
       manualInputSection.style.display = isHidden ? 'block' : 'none';
       toggleIcon.textContent = isHidden ? '▲' : '▼';
       this.style.background = isHidden ? '#e0f2fe' : '#f8fafc';
       this.style.borderColor = isHidden ? '#4facfe' : '#e2e8f0';
-      
+
       console.log('Toggle clicked, now:', isHidden ? 'OPEN' : 'CLOSED');
     });
   }
@@ -1495,12 +1496,12 @@
     openCameraBtn.addEventListener('click', async function(e) {
       e.preventDefault();
       try {
-        currentStream = await navigator.mediaDevices.getUserMedia({ 
-          video: { 
+        currentStream = await navigator.mediaDevices.getUserMedia({
+          video: {
             facingMode: 'environment',
             width: { ideal: 1280 },
             height: { ideal: 720 }
-          } 
+          }
         });
         cameraVideo.srcObject = currentStream;
         cameraModal.style.display = 'flex';
@@ -1518,10 +1519,10 @@
       cameraCanvas.width = cameraVideo.videoWidth;
       cameraCanvas.height = cameraVideo.videoHeight;
       context.drawImage(cameraVideo, 0, 0);
-      
+
       const imageDataUrl = cameraCanvas.toDataURL('image/jpeg', 0.9);
       stickerImageData = imageDataUrl;
-      
+
       showStickerPreview(imageDataUrl);
       closeCamera();
     });
@@ -1534,7 +1535,7 @@
       closeCamera();
     });
   }
-  
+
   function closeCamera() {
     if (currentStream) {
       currentStream.getTracks().forEach(track => track.stop());
@@ -1548,7 +1549,7 @@
     stickerPreview.src = dataUrl;
     stickerPreviewContainer.style.display = 'block';
     clearStickerBtn.style.display = 'inline-flex';
-    
+
     // บันทึกลง localStorage ทันที
     const currentData = JSON.parse(localStorage.getItem(AUTOSAVE_KEY) || '{}');
     currentData.stickerImage = dataUrl;
@@ -1560,7 +1561,7 @@
     clearStickerBtn.addEventListener('click', function(e) {
       e.preventDefault();
       if (!confirm('ต้องการลบรูป Sticker ใช่หรือไม่?')) return;
-      
+
       clearStickerImage();
     });
   }
@@ -1570,7 +1571,7 @@
     stickerPreview.src = '';
     stickerPreviewContainer.style.display = 'none';
     clearStickerBtn.style.display = 'none';
-    
+
     // ลบจาก localStorage
     const currentData = JSON.parse(localStorage.getItem(AUTOSAVE_KEY) || '{}');
     delete currentData.stickerImage;
@@ -1590,11 +1591,11 @@
   window.hasStickerImage = function() {
     return !!stickerImageData;
   };
-  
+
   window.getStickerImage = function() {
     return stickerImageData;
   };
-  
+
   // ✅ Export ฟังก์ชันลบรูป (สำหรับปุ่ม Clear Data)
   window.clearStickerImage = clearStickerImage;
 })();
