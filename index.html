@@ -283,8 +283,8 @@
             border:2px solid #e2e8f0;
         }
         .gir-label {
-            font-weight:500;
-            color:#2d3748;
+            font-weight:600;
+            color:#be185d;
         }
         .calc-result {
             background:#f0f9ff;
@@ -1163,7 +1163,7 @@
                         <div class="frequency-selection">
                             <h4>เลือกวิธีการให้:</h4>
                             <label class="frequency-option" id="vitamin-k-daily-option">
-                                <input type="radio" name="vitamin-k-choice" value="daily" checked>
+                                <input type="radio" name="vitamin-k-choice" value="daily">
                                 <span class="frequency-option-label">Per day</span>
                                 <span class="source-option-value" id="vitamin-k-daily" style="margin-left:10px;">
                                     0 ml
@@ -1188,8 +1188,8 @@
                                 </select>
                             </div>
                             <label class="frequency-option">
-                                <input type="radio" name="vitamin-k-choice" value="none">
-                                <span class="frequency-option-label">ไม่เติม</span>
+                                <input type="radio" name="vitamin-k-choice" value="none" checked>
+                                <span class="frequency-option-label" style="color: #dc2626; font-weight: 600;">ไม่เติม</span>
                             </label>
                         </div>
                     </div>
@@ -1511,7 +1511,7 @@
             document.querySelector('input[name="k-source"]')?.checked && (document.querySelector('input[name="k-source"]').checked = false);
             document.querySelector('input[name="peditrace-freq"][value="daily"]')?.click();
             document.querySelector('input[name="cernevit-freq"][value="daily"]')?.click();
-            document.querySelector('input[name="vitamin-k-choice"][value="daily"]')?.click();
+            document.querySelector('input[name="vitamin-k-choice"][value="none"]')?.click();
 
             const peditDay = document.getElementById('peditrace-day');
             if (peditDay) peditDay.value = '1';
