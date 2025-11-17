@@ -195,8 +195,7 @@
     <div id="cameraModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; padding: 20px;">
       <div style="background: white; border-radius: 12px; padding: 20px; max-width: 90%; max-height: 90%; overflow: auto;">
         <h3 style="margin-bottom: 15px; text-align: center; color: #2d3748;">📸 ถ่ายรูป Patient Sticker</h3>
-        <p style="text-align: center; color: #64748b; margin-bottom: 15px; font-size: 0.9em;">วางสติกเกอร์ให้อยู่ในกรอบแล้วกดถ่ายรูป
-        <!-- กรอบถ่ายภาพ 5 x 3 cm แนวนอน -->
+        <p style="text-align: center; color: #64748b; margin-bottom: 15px; font-size: 0.9em;">วางสติกเกอร์ให้อยู่ในกรอบแล้วกดถ่ายรูป        <!-- กรอบถ่ายภาพ 5 x 3 cm แนวนอน -->
         <div id="cameraFrame"
              style="width: 5cm; height: 3cm; border: 2px solid #e2e8f0; border-radius: 8px;
                     margin: 0 auto 15px auto; position: relative; overflow: hidden; background: #000;">
@@ -978,6 +977,7 @@
     return d1===9? Math.ceil(v) : Math.floor(v);
   }
 
+  // ===== THE RESTORED CALCULATION LOGIC =====
   function calculateTPN(){
     const bw = parseFloat(document.getElementById('bw').value) || 0;
     const rate = parseFloat(document.getElementById('rate').value) || 0;
@@ -1135,7 +1135,7 @@
     document.getElementById('ca-volume').textContent = caVol_1.toFixed(1) + ' ml';
     document.getElementById('mg-volume').textContent = mgVol_2.toFixed(2) + ' ml';
 
-    const pedEl = document.getElementById('peditrace-volume');
+    const peditEl = document.getElementById('peditrace-volume');
     if (!includePeditrace) {
       pedEl.textContent = '0 ml (ไม่ให้วันนี้)';
       pedEl.style.background = '#fef3c7';
@@ -1223,6 +1223,8 @@
 
     autosaveCollect();
   }
+  // ===== END RESTORED CALCULATION LOGIC =====
+
 
   function extractNumberString(text) {
     if (text === undefined || text === null) return '0';
@@ -1365,11 +1367,13 @@
     const dayName = getDayName(orderDate);
   const dsel = id => document.getElementById(id)?.textContent || document.getElementById(id)?.value || '';
 
-  // ✅ ดึงแคลอรี่จาก index แล้วรวม PN calories per day ไว้ที่นี่
+  // --- START FIX: Ensure PN Cal Day is Calculated and Saved ---
+  // ดึงแคลอรี่จาก Display (ซึ่งคำนวณใน calculateTPN() แล้ว)
   const proteinCalDay  = Number(extractNumberString(dsel('protein-calories')))   || 0;
   const dextroseCalDay = Number(extractNumberString(dsel('dextrose-calories')))  || 0;
   const fatCalDay      = Number(extractNumberString(dsel('fat-calories')))       || 0;
   const pnCalDay       = Math.round(proteinCalDay + dextroseCalDay + fatCalDay);
+  // --- END FIX ---
 
   const reportData = {
     orderDate,
@@ -1405,8 +1409,6 @@
     fatCal: fatCalDay.toString(),
 
     gir: dsel('gir-result'), // ✅ GIR
-
-    // ... ส่วนที่เหลือใช้เหมือนเดิม
 
     pVol: extractNumberString(dsel('p-volume')),
     naFromGly: extractNumberString(dsel('na-from-glycophos')),
@@ -1446,7 +1448,7 @@
     milkCalKg: extractNumberString(dsel('breakdown-milk')),
     tfFromMilk: dsel('tf-from-milk'),
 
-    // ✅ เพิ่ม field นี้ให้ report ใช้โดยตรง
+    // ✅ เพิ่ม field นี้ให้ report ใช้โดยตรง (แก้ไขแล้ว)
     pnCalDay: pnCalDay.toString()
   };
 
