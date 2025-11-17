@@ -301,120 +301,122 @@
     </section>
 
     <!-- Macronutrients -->
-    <section class="section">
-      <h2>Macronutrients</h2>
+<section class="section">
+  <h2>Macronutrients</h2>
 
-      <!-- Order inputs first -->
-      <div class="input-group">
-        <div class="input-field">
-          <label for="protein">Protein</label>
-          <div class="input-with-unit">
-            <input type="number" inputmode="decimal" id="protein" step="0.1" placeholder="กรอกปริมาณโปรตีน"/>
-            <span class="unit">g/kg/day</span>
-          </div>
-        </div>
-        <div class="input-field">
-          <label for="fat">Fat</label>
-          <div class="input-with-unit">
-            <input type="number" inputmode="decimal" id="fat" step="0.1" placeholder="กรอกปริมาณไขมัน"/>
-            <span class="unit">g/kg/day</span>
-          </div>
-        </div>
+  <!-- Order inputs first -->
+  <div class="input-group">
+    <div class="input-field">
+      <label for="protein">Protein</label>
+      <div class="input-with-unit">
+        <input type="number" inputmode="decimal" id="protein" step="0.1" placeholder="กรอกปริมาณโปรตีน"/>
+        <span class="unit">g/kg/day</span>
       </div>
+    </div>
+    <div class="input-field">
+      <label for="fat">Fat</label>
+      <div class="input-with-unit">
+        <input type="number" inputmode="decimal" id="fat" step="0.1" placeholder="กรอกปริมาณไขมัน"/>
+        <span class="unit">g/kg/day</span>
+      </div>
+    </div>
+  </div>
 
-      <div class="input-group">
-        <div class="input-field">
-          <label for="dextrose">%Dextrose</label>
-          <div class="input-with-unit">
-            <input type="number" inputmode="decimal" id="dextrose" step="0.1" placeholder="กรอกเปอร์เซ็นต์ Dextrose"/>
-            <span class="unit">%</span>
-          </div>
-        </div>
-        <div class="input-field"><!-- spacer --></div>
+  <!-- ✅ แก้ไข: ย้าย GIR มาอยู่ใต้ %Dextrose -->
+  <div class="input-group">
+    <div class="input-field">
+      <label for="dextrose">%Dextrose</label>
+      <div class="input-with-unit">
+        <input type="number" inputmode="decimal" id="dextrose" step="0.1" placeholder="กรอกเปอร์เซ็นต์ Dextrose"/>
+        <span class="unit">%</span>
       </div>
+    </div>
+    <div class="input-field"><!-- spacer --></div>
+  </div>
 
-      <!-- Protein Product Selection -->
-      <div class="product-selection">
-        <h3>🧬 เลือก Protein Product</h3>
-        <div class="product-options">
-          <label class="product-option" data-product="protein">
-            <input type="radio" name="protein-product" value="aminoven" checked>
-            <div class="product-option-label">
-              <div class="product-name">10% Aminoven® infant</div>
-              <div class="product-info">สำหรับอายุ 0-1 เดือน</div>
-            </div>
-          </label>
-          <label class="product-option" data-product="protein">
-            <input type="radio" name="protein-product" value="amiparen">
-            <div class="product-option-label">
-              <div class="product-name">10% Amiparen®</div>
-              <div class="product-info">สำหรับอายุมากกว่า 1 เดือน</div>
-            </div>
-          </label>
-          <label class="product-option" data-product="protein">
-            <input type="radio" name="protein-product" value="aminoplasmal">
-            <div class="product-option-label">
-              <div class="product-name">15% Aminoplasmal®</div>
-              <div class="product-info">ความเข้มข้นสูง (ปริมาตรน้อยกว่า)</div>
-            </div>
-          </label>
-        </div>
-      </div>
+  <!-- ✅ GIR แสดงทันทีหลังกรอก %Dextrose -->
+  <div class="gir-display">
+    <div class="gir-label">GIR (Glucose Infusion Rate)</div>
+    <div class="calc-result gir-pink" id="gir-result">0 mg/kg/min</div>
+  </div>
 
-      <!-- Fat Product Selection -->
-      <div class="product-selection">
-        <h3>💧 เลือก Fat Product</h3>
-        <div class="product-options">
-          <label class="product-option" data-product="fat">
-            <input type="radio" name="fat-product" value="smof" checked>
-            <div class="product-option-label">
-              <div class="product-name">20% SMOF lipid</div>
-              <div class="product-info">Mixed lipid emulsion</div>
-            </div>
-          </label>
-          <label class="product-option" data-product="fat">
-            <input type="radio" name="fat-product" value="intralipid">
-            <div class="product-option-label">
-              <div class="product-name">20% Intralipid</div>
-              <div class="product-info">Soybean oil emulsion</div>
-            </div>
-          </label>
+  <!-- Protein Product Selection -->
+  <div class="product-selection">
+    <h3>🧬 เลือก Protein Product</h3>
+    <div class="product-options">
+      <label class="product-option" data-product="protein">
+        <input type="radio" name="protein-product" value="aminoven" checked>
+        <div class="product-option-label">
+          <div class="product-name">10% Aminoven® infant</div>
+          <div class="product-info">สำหรับอายุ 0-1 เดือน</div>
         </div>
-      </div>
+      </label>
+      <label class="product-option" data-product="protein">
+        <input type="radio" name="protein-product" value="amiparen">
+        <div class="product-option-label">
+          <div class="product-name">10% Amiparen®</div>
+          <div class="product-info">สำหรับอายุมากกว่า 1 เดือน</div>
+        </div>
+      </label>
+      <label class="product-option" data-product="protein">
+        <input type="radio" name="protein-product" value="aminoplasmal">
+        <div class="product-option-label">
+          <div class="product-name">15% Aminoplasmal®</div>
+          <div class="product-info">ความเข้มข้นสูง (ปริมาตรน้อยกว่า)</div>
+        </div>
+      </label>
+    </div>
+  </div>
 
-      <!-- Summary Table -->
-      <div class="tpn-table">
-        <div class="table-header">
-          <div class="table-cell header-cell">องค์ประกอบ</div>
-          <div class="table-cell header-cell">ปริมาตร (ml)</div>
-          <div class="table-cell header-cell">แคลอรี่ (kcal)</div>
-          <div class="table-cell header-cell">mOsmol/L</div>
+  <!-- Fat Product Selection -->
+  <div class="product-selection">
+    <h3>💧 เลือก Fat Product</h3>
+    <div class="product-options">
+      <label class="product-option" data-product="fat">
+        <input type="radio" name="fat-product" value="smof" checked>
+        <div class="product-option-label">
+          <div class="product-name">20% SMOF lipid</div>
+          <div class="product-info">Mixed lipid emulsion</div>
         </div>
-        <div class="table-row">
-          <div class="table-cell component-cell" id="protein-label">10% Aminoven® infant</div>
-          <div class="table-cell result-cell volume-yellow" id="protein-volume">0</div>
-          <div class="table-cell result-cell" id="protein-calories">0</div>
-          <div class="table-cell result-cell osmol-purple" id="protein-osmol">0</div>
+      </label>
+      <label class="product-option" data-product="fat">
+        <input type="radio" name="fat-product" value="intralipid">
+        <div class="product-option-label">
+          <div class="product-name">20% Intralipid</div>
+          <div class="product-info">Soybean oil emulsion</div>
         </div>
-        <div class="table-row">
-          <div class="table-cell component-cell">50% Dextrose</div>
-          <div class="table-cell result-cell volume-yellow" id="dextrose-volume">0</div>
-          <div class="table-cell result-cell" id="dextrose-calories">0</div>
-          <div class="table-cell result-cell osmol-purple" id="dextrose-osmol">0</div>
-        </div>
-        <div class="table-row">
-          <div class="table-cell component-cell" id="fat-label">20% SMOF lipid</div>
-          <div class="table-cell result-cell volume-yellow" id="fat-volume">0</div>
-          <div class="table-cell result-cell" id="fat-calories">0</div>
-          <div class="table-cell result-cell">-</div>
-        </div>
-      </div>
+      </label>
+    </div>
+  </div>
 
-      <div class="gir-display">
-        <div class="gir-label">GIR (Glucose Infusion Rate)</div>
-        <div class="calc-result gir-pink" id="gir-result">0 mg/kg/min</div>
-      </div>
-    </section>
+  <!-- Summary Table -->
+  <div class="tpn-table">
+    <div class="table-header">
+      <div class="table-cell header-cell">องค์ประกอบ</div>
+      <div class="table-cell header-cell">ปริมาตร (ml)</div>
+      <div class="table-cell header-cell">แคลอรี่ (kcal)</div>
+      <div class="table-cell header-cell">mOsmol/L</div>
+    </div>
+    <div class="table-row">
+      <div class="table-cell component-cell" id="protein-label">10% Aminoven® infant</div>
+      <div class="table-cell result-cell volume-yellow" id="protein-volume">0</div>
+      <div class="table-cell result-cell" id="protein-calories">0</div>
+      <div class="table-cell result-cell osmol-purple" id="protein-osmol">0</div>
+    </div>
+    <div class="table-row">
+      <div class="table-cell component-cell">50% Dextrose</div>
+      <div class="table-cell result-cell volume-yellow" id="dextrose-volume">0</div>
+      <div class="table-cell result-cell" id="dextrose-calories">0</div>
+      <div class="table-cell result-cell osmol-purple" id="dextrose-osmol">0</div>
+    </div>
+    <div class="table-row">
+      <div class="table-cell component-cell" id="fat-label">20% SMOF lipid</div>
+      <div class="table-cell result-cell volume-yellow" id="fat-volume">0</div>
+      <div class="table-cell result-cell" id="fat-calories">0</div>
+      <div class="table-cell result-cell">-</div>
+    </div>
+  </div>
+</section>
 
     <!-- Electrolytes -->
     <section class="section">
@@ -1369,12 +1371,9 @@
     proteinProduct: getProteinProductName(),
     fatProduct: getFatProductName(),
     
-    // ส่งข้อมูล Patient (ถ้ากรอก)
     hn: hn || '',
     name: name || '',
     ward: ward || '',
-    
-    // ✅ ส่งรูป Sticker
     stickerImage: window.getStickerImage ? window.getStickerImage() : null,
     
     bw,
@@ -1398,7 +1397,9 @@
     fatVol: extractNumberString(dsel('fat-volume')),
     fatCal: extractNumberString(dsel('fat-calories')),
 
-    gir: dsel('gir-result'),
+    gir: dsel('gir-result'), // ✅ เพิ่ม GIR
+
+    // ... ส่วนที่เหลือเหมือนเดิม
 
     pVol: extractNumberString(dsel('p-volume')),
     naFromGly: extractNumberString(dsel('na-from-glycophos')),
