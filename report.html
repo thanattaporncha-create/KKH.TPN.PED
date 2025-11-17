@@ -315,16 +315,19 @@
         }
 
         .sticker-frame {
-            width: 200px;
-            height: 160px;
-            border: 2px solid #e2e8f0;
-            border-radius: 4px;
-            background-color: #ffffff;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            overflow: hidden;
-        }
+    width: 200px;
+    height: 160px;
+    border: 2px solid #e2e8f0;
+    border-radius: 4px;
+    background-color: #ffffff;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    /* ✅ เพิ่มความคมชัด */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
     </style>
 </head>
 <body>
@@ -524,13 +527,13 @@
             });
         }
         if (parseFloat(data.dextroseVol) > 0) {
-            compositions.push({
-                name: '50% Dextrose',
-                input: `${data.dextrose || '0'}%`,
-                volume: data.dextroseVol,
-                note: ''
-            });
-        }
+    compositions.push({
+        name: '50% Dextrose',
+        input: `${data.dextrose || '0'}%`,
+        volume: data.dextroseVol,
+        note: data.gir ? `GIR: ${data.gir}` : '' // ✅ เพิ่ม GIR ในช่อง Note
+    });
+}
 
         if (parseFloat(data.pVol) > 0) {
             const pVolShow = parseFloat(String(data.pVol).replace(/[^0-9.]/g, '')).toFixed(1);
@@ -747,38 +750,42 @@
         }
 
         async function saveAsImage() {
-            const root = document.getElementById('report-root');
-            toggleExporting(true);
-            await new Promise(r => requestAnimationFrame(r));
+    const root = document.getElementById('report-root');
+    toggleExporting(true);
+    await new Promise(r => requestAnimationFrame(r));
 
-            const rect = root.getBoundingClientRect();
-            const maxCanvasSide = 3800; // กันไม่ให้เกิน limit ของ iPad
-            let scale = 5;              // ตั้งเป้าตามที่ขิมอยากได้
-            scale = Math.min(
-                scale,
-                maxCanvasSide / rect.width,
-                maxCanvasSide / rect.height
-            );
+    const rect = root.getBoundingClientRect();
+    const maxCanvasSide = 4096; // ✅ เพิ่มจาก 3800 เป็น 4096
+    let scale = 6;              // ✅ เพิ่มจาก 5 เป็น 6 (คมชัดขึ้น)
+    scale = Math.min(
+        scale,
+        maxCanvasSide / rect.width,
+        maxCanvasSide / rect.height
+    );
 
-            const canvas = await html2canvas(root, {
-                scale: scale,
-                useCORS: true,
-                backgroundColor: '#ffffff',
-                scrollX: 0,
-                scrollY: -window.scrollY,
-                windowWidth: document.documentElement.scrollWidth,
-                windowHeight: document.documentElement.scrollHeight
-            });
+    const canvas = await html2canvas(root, {
+        scale: scale,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        scrollX: 0,
+        scrollY: -window.scrollY,
+        windowWidth: document.documentElement.scrollWidth,
+        windowHeight: document.documentElement.scrollHeight,
+        // ✅ เพิ่ม options สำหรับความคมชัด
+        allowTaint: true,
+        imageTimeout: 0
+    });
 
-            toggleExporting(false);
+    toggleExporting(false);
 
-            const dataUrl = canvas.toDataURL('image/png');
-            const img = document.getElementById('report-image');
-            const viewer = document.getElementById('image-viewer');
+    const dataUrl = canvas.toDataURL('image/png', 1.0); // ✅ คุณภาพสูงสุด
+    const img = document.getElementById('report-image');
+    const viewer = document.getElementById('image-viewer');
 
-            img.src = dataUrl;
-            viewer.classList.remove('hidden');
-            window.scrollTo(0, 0);
+    img.src = dataUrl;
+    viewer.classList.remove('hidden');
+    window.scrollTo(0, 0);
+}
         }
 
         function closeImageViewer() {
