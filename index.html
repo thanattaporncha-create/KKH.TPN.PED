@@ -1486,10 +1486,10 @@
 
             const dateEl = document.getElementById('order-date');
             if (dateEl) {
-                const today = new Date();
-                dateEl.value = today.toISOString().split('T')[0];
-            }
-
+                const dateEl = document.getElementById('order-date');
+if (dateEl) {
+    dateEl.value = getLocalISODate();
+}
             document.querySelector('input[name="tpn-route"][value="central"]')?.click();
 
             // Reset product selections
@@ -1845,15 +1845,21 @@
             };
             return names[value] || '20% SMOF lipid';
         }
-
+// ใช้ดึงวันที่ตาม Local Time ในรูปแบบ YYYY-MM-DD
+function getLocalISODate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // getMonth() เริ่มจาก 0
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
         // ===== DOM Content Loaded Event =====
         document.addEventListener('DOMContentLoaded', function() {
-            const dateEl = document.getElementById('order-date');
-            if (dateEl && !dateEl.value) {
-                const today = new Date();
-                const dateStr = today.toISOString().split('T')[0];
-                dateEl.value = dateStr;
-            }
+           const dateEl = document.getElementById('order-date');
+if (dateEl && !dateEl.value) {
+    dateEl.value = getLocalISODate();
+}
+            
 
             initProductSelection();
             autosaveRestore();
