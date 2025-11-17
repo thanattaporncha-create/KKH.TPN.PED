@@ -21,7 +21,6 @@
             padding: 0;
         }
 
-        /* กล่องหลักของรายงาน */
         .report-container {
             width: 820px;
             min-width: 820px;
@@ -30,7 +29,6 @@
             padding: 16px 18px;
         }
 
-        /* ครอบ report ทั้งใบ ให้เลื่อนซ้ายขวาได้ถ้าจอแคบ */
         .scale-wrap {
             position: relative;
             width: 100%;
@@ -120,7 +118,6 @@
             padding: 4px 6px;
             color: #000000;
         }
-        /* ตัวเลข volume (ml) ให้ใหญ่ขึ้นนิดนึง */
         .composition-table td:nth-child(3) {
             font-size: 10pt;
         }
@@ -137,7 +134,6 @@
             display: inline-block;
         }
 
-        /* ปุ่มปฏิบัติการ */
         .top-actions {
             position: fixed;
             top: 20px;
@@ -175,7 +171,6 @@
             .section { margin-bottom: 8px; }
         }
 
-        /* Summary */
         .summary-table { width: 100%; border-collapse: collapse; font-size: 9pt; }
         .summary-table th, .summary-table td { border: 1px solid #e2e8f0; padding: 6px 8px; }
         .summary-table th {
@@ -190,7 +185,7 @@
         }
         .summary-value-strong {
             font-weight: 700;
-            font-size: 10pt; /* ตัวเลข summary ใหญ่ขึ้นนิดนึง */
+            font-size: 10pt;
         }
         #display-osmol {
             font-weight: 700;
@@ -199,7 +194,6 @@
         .osmol-ok { color: #166534; font-weight: 700; }
         .osmol-high { color: #991b1b; font-weight: 700; }
 
-        /* ปุ่มบนจอเล็ก */
         @media (max-width: 480px) {
             .top-actions {
                 left: 10px;
@@ -215,7 +209,6 @@
             }
         }
 
-        /* ============= โหมด export เท่านั้น ============= */
         #report-root.exporting .header {
             display: flex;
             align-items: flex-start;
@@ -226,7 +219,6 @@
             margin-left: auto;
         }
 
-        /* ===== Overlay ดูรูปหลัง Save Image ===== */
         .image-viewer {
             position: fixed;
             inset: 0;
@@ -271,7 +263,6 @@
             text-align: right;
         }
 
-        /* รูป report: เอา width ออก ให้ใช้ max-width อย่างเดียว ป้องกันยืดเกินบนไอแพด */
         .image-viewer img {
             max-width: 100%;
             height: auto;
@@ -287,11 +278,10 @@
         .footer {
             margin-top: 10px;
             font-size: 8.5pt;
-            color: #4b5563;   /* footer ยังเป็นสีเทาเหมือนเดิม */
+            color: #4b5563;
             text-align: left;
         }
 
-        /* ===== Patient Sticker frame: fixed size, no stretching ===== */
         #sticker-container {
             display: none;
             text-align: center;
@@ -315,30 +305,27 @@
         }
 
         .sticker-frame {
-    width: 200px;
-    height: 160px;
-    border: 2px solid #e2e8f0;
-    border-radius: 4px;
-    background-color: #ffffff;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    overflow: hidden;
-    /* ✅ เพิ่มความคมชัด */
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-}
+            width: 200px;
+            height: 160px;
+            border: 2px solid #e2e8f0;
+            border-radius: 4px;
+            background-color: #ffffff;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            overflow: hidden;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
     </style>
 </head>
 <body>
-    <!-- ปุ่มนำทางและบันทึก -->
     <div class="top-actions">
         <button class="btn secondary" onclick="goBack()">← ย้อนกลับ</button>
         <button class="btn" onclick="saveAsImage()">🖼️ Save Image</button>
         <button class="btn" onclick="printScaled()">🖨️ พิมพ์รายงาน</button>
     </div>
 
-    <!-- Overlay แสดงรูปหลัง Save Image -->
     <div id="image-viewer" class="image-viewer hidden">
         <div class="image-viewer-header">
             <button class="image-viewer-btn" onclick="closeImageViewer()">← กลับไปหน้า Report</button>
@@ -351,7 +338,6 @@
 
     <div class="scale-wrap">
       <div class="report-container" id="report-root">
-          <!-- Header -->
           <div class="header">
               <h1>📋 TPN Order Report</h1>
               <div class="order-date-special">
@@ -362,11 +348,9 @@
               </div>
           </div>
 
-          <!-- Patient Information -->
           <div class="section">
             <div class="section-title">👤 Patient Information</div>
             <div style="display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: flex-start;">
-              <!-- ข้อมูลผู้ป่วย -->
               <div class="info-grid" id="patient-info-text">
                   <div class="info-item"><span class="info-label">HN:</span><span class="info-value" id="display-hn"></span></div>
                   <div class="info-item"><span class="info-label">Name:</span><span class="info-value" id="display-name"></span></div>
@@ -375,7 +359,6 @@
                   <div class="info-item"><span class="info-label">Route:</span><span class="info-value"><span class="route-badge" id="display-route"></span></span></div>
               </div>
 
-              <!-- รูป Sticker -->
               <div id="sticker-container">
                 <div class="sticker-inner">
                   <p class="sticker-label">📋 Patient Sticker</p>
@@ -385,7 +368,6 @@
             </div>
           </div>
 
-          <!-- TPN Configuration -->
           <div class="section">
               <div class="section-title">💊 TPN Configuration</div>
               <div class="info-grid">
@@ -394,7 +376,6 @@
               </div>
           </div>
 
-          <!-- TPN Composition -->
           <div class="section">
               <div class="section-title">🧪 TPN Composition</div>
               <table class="composition-table" id="composition-table">
@@ -410,7 +391,6 @@
               </table>
           </div>
 
-          <!-- Summary -->
           <div class="section">
               <div class="section-title">📊 Summary</div>
               <table class="summary-table">
@@ -442,7 +422,6 @@
               </table>
           </div>
 
-          <!-- Footer -->
           <div class="footer">
               <p>Generated on <span id="generated-date"></span></p>
               <p style="margin-top: 5px;">โรงพยาบาลขอนแก่น TPN Calculator for Pediatrics © 2025</p>
@@ -450,20 +429,10 @@
       </div>
     </div>
 
-    <!-- Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
         function goBack() { window.location.href = 'index.html'; }
-
-        function specialRound2(v){
-            const n = Number(v);
-            if (!isFinite(n) || n === 0) return '0.00';
-            const h = Math.floor(n * 1000);
-            const d3 = h % 10;
-            const out = (d3 === 9) ? Math.ceil(n * 100) / 100 : Math.floor(n * 100) / 100;
-            return out.toFixed(2);
-        }
 
         const data = JSON.parse(localStorage.getItem('tpnReportData') || '{}');
 
@@ -476,9 +445,9 @@
 
             if (!data.hn && !data.name && !data.ward) {
                 const infoItems = document.querySelectorAll('#patient-info-text .info-item');
-                if (infoItems[0](undefined)) infoItems[0](undefined).style.display = 'none';
-                if (infoItems[1](undefined)) infoItems[1](undefined).style.display = 'none';
-                if (infoItems[2](undefined)) infoItems[2](undefined).style.display = 'none';
+                if (infoItems[0]) infoItems[0].style.display = 'none';
+                if (infoItems[1]) infoItems[1].style.display = 'none';
+                if (infoItems[2]) infoItems[2].style.display = 'none';
             }
         }
 
@@ -527,13 +496,14 @@
             });
         }
         if (parseFloat(data.dextroseVol) > 0) {
-    compositions.push({
-        name: '50% Dextrose',
-        input: `${data.dextrose || '0'}%`,
-        volume: data.dextroseVol,
-        note: data.gir ? `GIR: ${data.gir}` : '' // ✅ เพิ่ม GIR ในช่อง Note
-    });
-}
+            compositions.push({
+                name: '50% Dextrose',
+                input: `${data.dextrose || '0'}%`,
+                volume: data.dextroseVol,
+                note: data.gir ? `GIR: ${data.gir}` : ''
+            });
+        }
+
         if (parseFloat(data.pVol) > 0) {
             const pVolShow = parseFloat(String(data.pVol).replace(/[^0-9.]/g, '')).toFixed(1);
             const naFromGly = (data.naFromGly !== undefined && data.naFromGly !== null && String(data.naFromGly).trim() !== '')
@@ -586,6 +556,15 @@
                 volume: parseFloat(String(data.caVol).replace(/[^0-9.]/g, '')).toFixed(1),
                 note: ''
             });
+        }
+
+        function specialRound2(v){
+            const n = Number(v);
+            if (!isFinite(n) || n === 0) return '0.00';
+            const h = Math.floor(n * 1000);
+            const d3 = h % 10;
+            const out = (d3 === 9) ? Math.ceil(n * 100) / 100 : Math.floor(n * 100) / 100;
+            return out.toFixed(2);
         }
 
         (function handleMg() {
@@ -709,9 +688,9 @@
             tbody.appendChild(row);
         });
 
-// ✅ ดึง Total PN calories per day ตรงจาก index
-const pnCalDay = data.pnCalDay ? parseInt(String(data.pnCalDay).replace(/[^0-9.]/g, ''), 10) : 0;
-document.getElementById('display-pn-cal').textContent = pnCalDay ? pnCalDay + '' : '0';
+        // ✅ ใช้ค่า pnCalPerDay ที่ส่งมาจาก index โดยตรง
+        const pnCalPerDay = parseFloat(data.pnCalPerDay) || 0;
+        document.getElementById('display-pn-cal').textContent = isFinite(pnCalPerDay) ? pnCalPerDay.toFixed(0) : '0';
 
         const osmolValue = data.totalOsmol ? String(data.totalOsmol).replace('~', '') : '0';
         const osmolNum = parseInt(osmolValue || '0', 10);
@@ -748,42 +727,42 @@ document.getElementById('display-pn-cal').textContent = pnCalDay ? pnCalDay + ''
         }
 
         async function saveAsImage() {
-    const root = document.getElementById('report-root');
-    toggleExporting(true);
-    await new Promise(r => requestAnimationFrame(r));
+            const root = document.getElementById('report-root');
+            toggleExporting(true);
+            await new Promise(r => requestAnimationFrame(r));
 
-    const rect = root.getBoundingClientRect();
-    const maxCanvasSide = 4096; // ✅ เพิ่มจาก 3800 เป็น 4096
-    let scale = 6;              // ✅ เพิ่มจาก 5 เป็น 6 (คมชัดขึ้น)
-    scale = Math.min(
-        scale,
-        maxCanvasSide / rect.width,
-        maxCanvasSide / rect.height
-    );
+            const rect = root.getBoundingClientRect();
+            const maxCanvasSide = 4096;
+            let scale = 6;
+            scale = Math.min(
+                scale,
+                maxCanvasSide / rect.width,
+                maxCanvasSide / rect.height
+            );
 
-    const canvas = await html2canvas(root, {
-        scale: scale,
-        useCORS: true,
-        backgroundColor: '#ffffff',
-        scrollX: 0,
-        scrollY: -window.scrollY,
-        windowWidth: document.documentElement.scrollWidth,
-        windowHeight: document.documentElement.scrollHeight,
-        // ✅ เพิ่ม options สำหรับความคมชัด
-        allowTaint: true,
-        imageTimeout: 0
-    });
+            const canvas = await html2canvas(root, {
+                scale: scale,
+                useCORS: true,
+                backgroundColor: '#ffffff',
+                scrollX: 0,
+                scrollY: -window.scrollY,
+                windowWidth: document.documentElement.scrollWidth,
+                windowHeight: document.documentElement.scrollHeight,
+                allowTaint: true,
+                imageTimeout: 0
+            });
 
-    toggleExporting(false);
+            toggleExporting(false);
 
-    const dataUrl = canvas.toDataURL('image/png', 1.0); // ✅ คุณภาพสูงสุด
-    const img = document.getElementById('report-image');
-    const viewer = document.getElementById('image-viewer');
+            const dataUrl = canvas.toDataURL('image/png', 1.0);
+            const img = document.getElementById('report-image');
+            const viewer = document.getElementById('image-viewer');
 
-    img.src = dataUrl;
-    viewer.classList.remove('hidden');
-    window.scrollTo(0, 0);
-}
+            img.src = dataUrl;
+            viewer.classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
         function closeImageViewer() {
             document.getElementById('image-viewer').classList.add('hidden');
         }
@@ -800,6 +779,3 @@ document.getElementById('display-pn-cal').textContent = pnCalDay ? pnCalDay + ''
         window.saveAsImage = saveAsImage;
         window.closeImageViewer = closeImageViewer;
         window.printScaled = printScaled;
-    </script>
-</body>
-</html>
