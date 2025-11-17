@@ -710,10 +710,13 @@
             tbody.appendChild(row);
         });
 
-        const bwNum = parseFloat(String(data.bw).replace(/[^0-9.]/g, '')) || 0;
-        const pnCalKg = parseFloat(String(data.pnCalKg).replace(/[^0-9.]/g, '')) || 0;
-        const pnCalPerDay = bwNum * pnCalKg;
-        document.getElementById('display-pn-cal').textContent = isFinite(pnCalPerDay) ? pnCalPerDay.toFixed(0) : '0';
+// ✅ คำนวณจากแคลอรี่ที่แท้จริง
+const proteinCal = parseFloat(String(data.proteinCal).replace(/[^0-9.]/g, '')) || 0;
+const dextroseCal = parseFloat(String(data.dextroseCal).replace(/[^0-9.]/g, '')) || 0;
+const fatCal = parseFloat(String(data.fatCal).replace(/[^0-9.]/g, '')) || 0;
+const pnCalPerDay = proteinCal + dextroseCal + fatCal;
+
+document.getElementById('display-pn-cal').textContent = isFinite(pnCalPerDay) ? pnCalPerDay.toFixed(0) : '0';
 
         const osmolValue = data.totalOsmol ? String(data.totalOsmol).replace('~', '') : '0';
         const osmolNum = parseInt(osmolValue || '0', 10);
