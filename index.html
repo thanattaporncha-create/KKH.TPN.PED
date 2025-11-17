@@ -1361,8 +1361,14 @@
 
   console.log('✅ Validation passed:', { hasStickerImage, hasManualData });
 
-  const dayName = getDayName(orderDate);
+    const dayName = getDayName(orderDate);
   const dsel = id => document.getElementById(id)?.textContent || document.getElementById(id)?.value || '';
+
+  // ✅ ดึงแคลอรี่จาก index แล้วรวม PN calories per day ไว้ที่นี่
+  const proteinCalDay  = Number(extractNumberString(dsel('protein-calories')))   || 0;
+  const dextroseCalDay = Number(extractNumberString(dsel('dextrose-calories')))  || 0;
+  const fatCalDay      = Number(extractNumberString(dsel('fat-calories')))       || 0;
+  const pnCalDay       = Math.round(proteinCalDay + dextroseCalDay + fatCalDay);
 
   const reportData = {
     orderDate,
@@ -1375,7 +1381,7 @@
     name: name || '',
     ward: ward || '',
     stickerImage: window.getStickerImage ? window.getStickerImage() : null,
-    
+
     bw,
     rate: document.getElementById('rate')?.value || '0',
     bag: document.getElementById('bag')?.value || '0',
@@ -1391,15 +1397,15 @@
     mg: document.getElementById('mg')?.value || '0',
 
     proteinVol: extractNumberString(dsel('protein-volume')),
-    proteinCal: extractNumberString(dsel('protein-calories')),
+    proteinCal: proteinCalDay.toString(),
     dextroseVol: extractNumberString(dsel('dextrose-volume')),
-    dextroseCal: extractNumberString(dsel('dextrose-calories')),
+    dextroseCal: dextroseCalDay.toString(),
     fatVol: extractNumberString(dsel('fat-volume')),
-    fatCal: extractNumberString(dsel('fat-calories')),
+    fatCal: fatCalDay.toString(),
 
-    gir: dsel('gir-result'), // ✅ เพิ่ม GIR
+    gir: dsel('gir-result'), // ✅ GIR
 
-    // ... ส่วนที่เหลือเหมือนเดิม
+    // ... ส่วนที่เหลือใช้เหมือนเดิม
 
     pVol: extractNumberString(dsel('p-volume')),
     naFromGly: extractNumberString(dsel('na-from-glycophos')),
@@ -1437,7 +1443,10 @@
     totalCalKg: extractNumberString(dsel('total-calories-kg')),
     pnCalKg: extractNumberString(dsel('breakdown-pn')),
     milkCalKg: extractNumberString(dsel('breakdown-milk')),
-    tfFromMilk: dsel('tf-from-milk')
+    tfFromMilk: dsel('tf-from-milk'),
+
+    // ✅ เพิ่ม field นี้ให้ report ใช้โดยตรง
+    pnCalDay: pnCalDay.toString()
   };
 
   localStorage.setItem('tpnReportData', JSON.stringify(reportData));
