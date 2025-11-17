@@ -10,7 +10,11 @@
             size: A4;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Sarabun', 'Noto Sans Thai', Arial, sans-serif;
@@ -21,6 +25,7 @@
             padding: 0;
         }
 
+        /* กล่องหลักของรายงาน */
         .report-container {
             width: 820px;
             min-width: 820px;
@@ -29,13 +34,17 @@
             padding: 16px 18px;
         }
 
+        /* ครอบ report ทั้งใบ ให้เลื่อนซ้ายขวาได้ถ้าจอแคบ */
         .scale-wrap {
             position: relative;
             width: 100%;
             overflow-x: auto;
         }
 
-        .scale-80 { transform: scale(0.8); transform-origin: top left; }
+        .scale-80 {
+            transform: scale(0.8);
+            transform-origin: top left;
+        }
 
         .header {
             text-align: left;
@@ -45,6 +54,7 @@
             position: relative;
             padding-top: 6px;
         }
+
         .header h1 {
             font-size: 18pt;
             color: #2d3748;
@@ -52,7 +62,10 @@
             font-weight: 700;
         }
 
-        .section { margin-bottom: 10px; }
+        .section {
+            margin-bottom: 10px;
+        }
+
         .section-title {
             background: #4facfe;
             color: white;
@@ -69,9 +82,24 @@
             gap: 6px 12px;
             margin-bottom: 8px;
         }
-        .info-item { display: flex; align-items: baseline; gap: 6px; }
-        .info-label { font-weight: 600; color: #2d3748; min-width: 90px; flex-shrink: 0; }
-        .info-value { color: #000000; flex: 1; }
+
+        .info-item {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #2d3748;
+            min-width: 90px;
+            flex-shrink: 0;
+        }
+
+        .info-value {
+            color: #000000;
+            flex: 1;
+        }
 
         .order-date-special {
             background: #f0f9ff;
@@ -85,12 +113,22 @@
             right: 0;
             top: 6px;
         }
+
         .order-date-special .date-info {
-            font-size: 10pt; font-weight: 600; color: #0369a1; white-space: nowrap;
+            font-size: 10pt;
+            font-weight: 600;
+            color: #0369a1;
+            white-space: nowrap;
         }
+
         .order-date-special .day-badge {
-            background: #0369a1; color: white; padding: 3px 10px; border-radius: 20px;
-            font-size: 9pt; font-weight: 600; white-space: nowrap;
+            background: #0369a1;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 9pt;
+            font-weight: 600;
+            white-space: nowrap;
         }
 
         .route-badge {
@@ -102,9 +140,18 @@
             font-size: 10pt;
             font-weight: 600;
         }
-        .route-badge.peripheral { background: #f59e0b; }
 
-        .composition-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 9pt; }
+        .route-badge.peripheral {
+            background: #f59e0b;
+        }
+
+        .composition-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+            font-size: 9pt;
+        }
+
         .composition-table th {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
@@ -113,17 +160,27 @@
             font-weight: 600;
             color: #2d3748;
         }
+
         .composition-table td {
             border: 1px solid #e2e8f0;
             padding: 4px 6px;
             color: #000000;
         }
+
+        /* ตัวเลข volume (ml) ให้ใหญ่ขึ้นนิดนึง */
         .composition-table td:nth-child(3) {
             font-size: 10pt;
         }
 
-        .composition-table tr:nth-child(even) { background: #f8fafc; }
-        .highlight-row { background: #fef3c7 !important; font-weight: 600; }
+        .composition-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .highlight-row {
+            background: #fef3c7 !important;
+            font-weight: 600;
+        }
+
         .input-badge {
             background: #e0f2fe;
             color: #0369a1;
@@ -134,6 +191,7 @@
             display: inline-block;
         }
 
+        /* ปุ่มปฏิบัติการ */
         .top-actions {
             position: fixed;
             top: 20px;
@@ -144,6 +202,7 @@
             flex-wrap: wrap;
             justify-content: flex-end;
         }
+
         .btn {
             background: #4facfe;
             color: white;
@@ -155,24 +214,66 @@
             font-weight: 600;
             box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
         }
-        .btn:hover { background: #3b8ad6; }
+
+        .btn:hover {
+            background: #3b8ad6;
+        }
+
         .btn.secondary {
             background: #718096;
             box-shadow: 0 4px 12px rgba(113, 128, 150, 0.4);
         }
-        .btn.secondary:hover { background: #4a5568; }
 
-        @media print {
-            body { padding: 0; margin: 0; background: #fff; }
-            .top-actions { display: none; }
-            .report-container { box-shadow: none; padding: 0; width: 100%; min-width: 0; }
-            #report-root.scale-80-print { transform: scale(0.8); transform-origin: top left; }
-            .header { margin-bottom: 10px; padding-bottom: 6px; }
-            .section { margin-bottom: 8px; }
+        .btn.secondary:hover {
+            background: #4a5568;
         }
 
-        .summary-table { width: 100%; border-collapse: collapse; font-size: 9pt; }
-        .summary-table th, .summary-table td { border: 1px solid #e2e8f0; padding: 6px 8px; }
+        @media print {
+            body {
+                padding: 0;
+                margin: 0;
+                background: #fff;
+            }
+
+            .top-actions {
+                display: none;
+            }
+
+            .report-container {
+                box-shadow: none;
+                padding: 0;
+                width: 100%;
+                min-width: 0;
+            }
+
+            #report-root.scale-80-print {
+                transform: scale(0.8);
+                transform-origin: top left;
+            }
+
+            .header {
+                margin-bottom: 10px;
+                padding-bottom: 6px;
+            }
+
+            .section {
+                margin-bottom: 8px;
+            }
+        }
+
+        /* Summary */
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9pt;
+        }
+
+        .summary-table th,
+        .summary-table td {
+            border: 1px solid #e2e8f0;
+            padding: 6px 8px;
+        }
+
         .summary-table th {
             background: #f8fafc;
             text-align: left;
@@ -180,20 +281,32 @@
             color: #2d3748;
             width: 50%;
         }
+
         .summary-table td {
             color: #000000;
         }
+
         .summary-value-strong {
             font-weight: 700;
             font-size: 10pt;
         }
+
         #display-osmol {
             font-weight: 700;
             font-size: 10pt;
         }
-        .osmol-ok { color: #166534; font-weight: 700; }
-        .osmol-high { color: #991b1b; font-weight: 700; }
 
+        .osmol-ok {
+            color: #166534;
+            font-weight: 700;
+        }
+
+        .osmol-high {
+            color: #991b1b;
+            font-weight: 700;
+        }
+
+        /* ปุ่มบนจอเล็ก */
         @media (max-width: 480px) {
             .top-actions {
                 left: 10px;
@@ -203,22 +316,26 @@
                 justify-content: center;
                 flex-wrap: wrap;
             }
+
             .btn {
                 padding: 8px 12px;
                 font-size: 11px;
             }
         }
 
+        /* ============= โหมด export เท่านั้น ============= */
         #report-root.exporting .header {
             display: flex;
             align-items: flex-start;
             gap: 10px;
         }
+
         #report-root.exporting .order-date-special {
             position: static;
             margin-left: auto;
         }
 
+        /* ===== Overlay ดูรูปหลัง Save Image ===== */
         .image-viewer {
             position: fixed;
             inset: 0;
@@ -231,6 +348,7 @@
             z-index: 1200;
             overflow-y: auto;
         }
+
         .image-viewer-header {
             position: fixed;
             top: 10px;
@@ -241,6 +359,7 @@
             align-items: center;
             z-index: 1300;
         }
+
         .image-viewer-btn {
             background: rgba(15,23,42,0.9);
             color: #f9fafb;
@@ -254,15 +373,18 @@
             align-items: center;
             gap: 6px;
         }
+
         .image-viewer-btn:hover {
             background: rgba(15,23,42,1);
         }
+
         .image-viewer-note {
             color: #e5e7eb;
             font-size: 11px;
             text-align: right;
         }
 
+        /* รูป report: เอา width ออก ให้ใช้ max-width อย่างเดียว */
         .image-viewer img {
             max-width: 100%;
             height: auto;
@@ -273,7 +395,9 @@
             background: #fff;
         }
 
-        .hidden { display: none !important; }
+        .hidden {
+            display: none !important;
+        }
 
         .footer {
             margin-top: 10px;
@@ -282,6 +406,7 @@
             text-align: left;
         }
 
+        /* ===== Patient Sticker frame: fixed size ===== */
         #sticker-container {
             display: none;
             text-align: center;
@@ -314,21 +439,23 @@
             background-repeat: no-repeat;
             background-size: cover;
             overflow: hidden;
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;
         }
     </style>
 </head>
 <body>
+    <!-- ปุ่มนำทางและบันทึก -->
     <div class="top-actions">
         <button class="btn secondary" onclick="goBack()">← ย้อนกลับ</button>
         <button class="btn" onclick="saveAsImage()">🖼️ Save Image</button>
         <button class="btn" onclick="printScaled()">🖨️ พิมพ์รายงาน</button>
     </div>
 
+    <!-- Overlay แสดงรูปหลัง Save Image -->
     <div id="image-viewer" class="image-viewer hidden">
         <div class="image-viewer-header">
-            <button class="image-viewer-btn" onclick="closeImageViewer()">← กลับไปหน้า Report</button>
+            <button class="image-viewer-btn" onclick="closeImageViewer()">
+                ← กลับไปหน้า Report
+            </button>
             <div class="image-viewer-note">
                 กดค้างที่รูปเพื่อบันทึกลงคลังภาพ 📱
             </div>
@@ -337,102 +464,155 @@
     </div>
 
     <div class="scale-wrap">
-      <div class="report-container" id="report-root">
-          <div class="header">
-              <h1>📋 TPN Order Report</h1>
-              <div class="order-date-special">
-                  <div class="date-info">
-                      📅 Order Date: <span id="display-order-date"></span>
-                  </div>
-                  <div class="day-badge" id="display-day-name"></div>
-              </div>
-          </div>
-
-          <div class="section">
-            <div class="section-title">👤 Patient Information</div>
-            <div style="display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: flex-start;">
-              <div class="info-grid" id="patient-info-text">
-                  <div class="info-item"><span class="info-label">HN:</span><span class="info-value" id="display-hn"></span></div>
-                  <div class="info-item"><span class="info-label">Name:</span><span class="info-value" id="display-name"></span></div>
-                  <div class="info-item"><span class="info-label">Ward:</span><span class="info-value" id="display-ward"></span></div>
-                  <div class="info-item"><span class="info-label">Body Weight:</span><span class="info-value" id="display-bw"></span></div>
-                  <div class="info-item"><span class="info-label">Route:</span><span class="info-value"><span class="route-badge" id="display-route"></span></span></div>
-              </div>
-
-              <div id="sticker-container">
-                <div class="sticker-inner">
-                  <p class="sticker-label">📋 Patient Sticker</p>
-                  <div class="sticker-frame" id="sticker-frame"></div>
+        <div class="report-container" id="report-root">
+            <!-- Header -->
+            <div class="header">
+                <h1>📋 TPN Order Report</h1>
+                <div class="order-date-special">
+                    <div class="date-info">
+                        📅 Order Date: <span id="display-order-date"></span>
+                    </div>
+                    <div class="day-badge" id="display-day-name"></div>
                 </div>
-              </div>
             </div>
-          </div>
 
-          <div class="section">
-              <div class="section-title">💊 TPN Configuration</div>
-              <div class="info-grid">
-                  <div class="info-item"><span class="info-label">Bag Volume:</span><span class="info-value" id="display-bag"></span></div>
-                  <div class="info-item"><span class="info-label">Rate:</span><span class="info-value" id="display-rate"></span></div>
-              </div>
-          </div>
+            <!-- Patient Information -->
+            <div class="section">
+                <div class="section-title">👤 Patient Information</div>
+                <div style="display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: flex-start;">
+                    <!-- ข้อมูลผู้ป่วย -->
+                    <div class="info-grid" id="patient-info-text">
+                        <div class="info-item">
+                            <span class="info-label">HN:</span>
+                            <span class="info-value" id="display-hn"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Name:</span>
+                            <span class="info-value" id="display-name"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Ward:</span>
+                            <span class="info-value" id="display-ward"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Body Weight:</span>
+                            <span class="info-value" id="display-bw"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Route:</span>
+                            <span class="info-value">
+                                <span class="route-badge" id="display-route"></span>
+                            </span>
+                        </div>
+                    </div>
 
-          <div class="section">
-              <div class="section-title">🧪 TPN Composition</div>
-              <table class="composition-table" id="composition-table">
-                  <thead>
-                      <tr>
-                          <th style="width: 35%;">Component</th>
-                          <th style="width: 20%; text-align: center;">Dosage</th>
-                          <th style="width: 20%; text-align: center;">Volume (ml)</th>
-                          <th style="width: 25%; text-align: center;">Note</th>
-                      </tr>
-                  </thead>
-                  <tbody id="composition-body"></tbody>
-              </table>
-          </div>
+                    <!-- รูป Sticker -->
+                    <div id="sticker-container">
+                        <div class="sticker-inner">
+                            <p class="sticker-label">📋 Patient Sticker</p>
+                            <div class="sticker-frame" id="sticker-frame"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-          <div class="section">
-              <div class="section-title">📊 Summary</div>
-              <table class="summary-table">
-                  <tbody>
-                      <tr>
-                          <th>Total PN calories per day</th>
-                          <td><span class="summary-value-strong" id="display-pn-cal">0</span> kcal/day</td>
-                      </tr>
-                      <tr>
-                          <th>Total mOsmol/L</th>
-                          <td>
-                              <span id="display-osmol">~0</span>
-                              <span id="osmol-note" class="osmol-ok" style="margin-left:8px;">✓ &lt; 900 (เหมาะสำหรับ Peripheral)</span>
-                          </td>
-                      </tr>
-                      <tr>
-                          <th>From PN</th>
-                          <td><span class="summary-value-strong" id="display-pn-total">0</span> kcal/kg/day</td>
-                      </tr>
-                      <tr>
-                          <th>From Milk</th>
-                          <td><span class="summary-value-strong" id="display-milk-total">0</span> kcal/kg/day</td>
-                      </tr>
-                      <tr>
-                          <th>Total</th>
-                          <td><span class="summary-value-strong" id="display-grand-total">0</span> kcal/kg/day</td>
-                      </tr>
-                  </tbody>
-              </table>
-          </div>
+            <!-- TPN Configuration -->
+            <div class="section">
+                <div class="section-title">💊 TPN Configuration</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Bag Volume:</span>
+                        <span class="info-value" id="display-bag"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Rate:</span>
+                        <span class="info-value" id="display-rate"></span>
+                    </div>
+                </div>
+            </div>
 
-          <div class="footer">
-              <p>Generated on <span id="generated-date"></span></p>
-              <p style="margin-top: 5px;">โรงพยาบาลขอนแก่น TPN Calculator for Pediatrics © 2025</p>
-          </div>
-      </div>
+            <!-- TPN Composition -->
+            <div class="section">
+                <div class="section-title">🧪 TPN Composition</div>
+                <table class="composition-table" id="composition-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 35%;">Component</th>
+                            <th style="width: 20%; text-align: center;">Dosage</th>
+                            <th style="width: 20%; text-align: center;">Volume (ml)</th>
+                            <th style="width: 25%; text-align: center;">Note</th>
+                        </tr>
+                    </thead>
+                    <tbody id="composition-body"></tbody>
+                </table>
+            </div>
+
+            <!-- Summary -->
+            <div class="section">
+                <div class="section-title">📊 Summary</div>
+                <table class="summary-table">
+                    <tbody>
+                        <tr>
+                            <th>Total PN calories per day</th>
+                            <td>
+                                <span class="summary-value-strong" id="display-pn-cal">0</span> kcal/day
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Total mOsmol/L</th>
+                            <td>
+                                <span id="display-osmol">~0</span>
+                                <span id="osmol-note" class="osmol-ok" style="margin-left:8px;">
+                                    ✓ &lt; 900 (เหมาะสำหรับ Peripheral)
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>From PN</th>
+                            <td>
+                                <span class="summary-value-strong" id="display-pn-total">0</span> kcal/kg/day
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>From Milk</th>
+                            <td>
+                                <span class="summary-value-strong" id="display-milk-total">0</span> kcal/kg/day
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Total</th>
+                            <td>
+                                <span class="summary-value-strong" id="display-grand-total">0</span> kcal/kg/day
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>Generated on <span id="generated-date"></span></p>
+                <p style="margin-top: 5px;">โรงพยาบาลขอนแก่น TPN Calculator for Pediatrics © 2025</p>
+            </div>
+        </div>
     </div>
 
+    <!-- Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
-        function goBack() { window.location.href = 'index.html'; }
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        function specialRound2(v) {
+            const n = Number(v);
+            if (!isFinite(n) || n === 0) return '0.00';
+            const h = Math.floor(n * 1000);
+            const d3 = h % 10;
+            const out = (d3 === 9) ? Math.ceil(n * 100) / 100 : Math.floor(n * 100) / 100;
+            return out.toFixed(2);
+        }
 
         const data = JSON.parse(localStorage.getItem('tpnReportData') || '{}');
 
@@ -462,13 +642,16 @@
         let dayNameText = data.orderDayName || '-';
         if (data.orderDate && data.orderDate !== '-') {
             const date = new Date(data.orderDate);
-            const thaiMonths = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+            const thaiMonths = [
+                'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+                'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+            ];
             const day = date.getDate();
             const month = thaiMonths[date.getMonth()];
             const year = date.getFullYear() + 543;
             displayDate = `${day} ${month} ${year}`;
 
-            const daysEn = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+            const daysEn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             dayNameText = daysEn[date.getDay()];
         }
         document.getElementById('display-order-date').textContent = displayDate;
@@ -495,12 +678,13 @@
                 note: ''
             });
         }
+
         if (parseFloat(data.dextroseVol) > 0) {
             compositions.push({
                 name: '50% Dextrose',
                 input: `${data.dextrose || '0'}%`,
                 volume: data.dextroseVol,
-                note: data.gir ? `GIR: ${data.gir}` : ''
+                note: ''
             });
         }
 
@@ -558,15 +742,6 @@
             });
         }
 
-        function specialRound2(v){
-            const n = Number(v);
-            if (!isFinite(n) || n === 0) return '0.00';
-            const h = Math.floor(n * 1000);
-            const d3 = h % 10;
-            const out = (d3 === 9) ? Math.ceil(n * 100) / 100 : Math.floor(n * 100) / 100;
-            return out.toFixed(2);
-        }
-
         (function handleMg() {
             const mgRawStr = (data.mgVol !== undefined && data.mgVol !== null && String(data.mgVol).trim() !== '')
                 ? String(data.mgVol).replace(/[^0-9.\-]/g, '')
@@ -599,7 +774,7 @@
             if (data.peditFreq === 'daily') peditNote = 'Per day';
             else if (data.peditFreq === 'mwf') peditNote = 'Mon, Wed, Fri';
             else if (data.peditFreq === 'weekly') {
-                const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+                const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
                 peditNote = 'Weekly (' + days[parseInt(data.peditDay || 1)] + ')';
             }
             compositions.push({
@@ -616,7 +791,7 @@
             if (data.cernFreq === 'daily') cernNote = 'Per day';
             else if (data.cernFreq === 'mwf') cernNote = 'Mon, Wed, Fri';
             else if (data.cernFreq === 'weekly') {
-                const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+                const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
                 cernNote = 'Weekly (' + days[parseInt(data.cernDay || 1)] + ')';
             }
             compositions.push({
@@ -640,7 +815,7 @@
         } else if (data.vitKChoice === 'weekly') {
             const vitKVol = data.vitKWeekly ? parseFloat(String(data.vitKWeekly).replace(/[^0-9.]/g, '')) : 0;
             if (vitKVol > 0) {
-                const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+                const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
                 const dayName = days[parseInt(data.vitKDay || 1)];
                 compositions.push({
                     name: 'Vitamin K',
@@ -688,8 +863,9 @@
             tbody.appendChild(row);
         });
 
-        // ✅ ใช้ค่า pnCalPerDay ที่ส่งมาจาก index โดยตรง
-        const pnCalPerDay = parseFloat(data.pnCalPerDay) || 0;
+        const bwNum = parseFloat(String(data.bw).replace(/[^0-9.]/g, '')) || 0;
+        const pnCalKg = parseFloat(String(data.pnCalKg).replace(/[^0-9.]/g, '')) || 0;
+        const pnCalPerDay = bwNum * pnCalKg;
         document.getElementById('display-pn-cal').textContent = isFinite(pnCalPerDay) ? pnCalPerDay.toFixed(0) : '0';
 
         const osmolValue = data.totalOsmol ? String(data.totalOsmol).replace('~', '') : '0';
@@ -732,8 +908,8 @@
             await new Promise(r => requestAnimationFrame(r));
 
             const rect = root.getBoundingClientRect();
-            const maxCanvasSide = 4096;
-            let scale = 6;
+            const maxCanvasSide = 3800;
+            let scale = 5;
             scale = Math.min(
                 scale,
                 maxCanvasSide / rect.width,
@@ -747,14 +923,12 @@
                 scrollX: 0,
                 scrollY: -window.scrollY,
                 windowWidth: document.documentElement.scrollWidth,
-                windowHeight: document.documentElement.scrollHeight,
-                allowTaint: true,
-                imageTimeout: 0
+                windowHeight: document.documentElement.scrollHeight
             });
 
             toggleExporting(false);
 
-            const dataUrl = canvas.toDataURL('image/png', 1.0);
+            const dataUrl = canvas.toDataURL('image/png');
             const img = document.getElementById('report-image');
             const viewer = document.getElementById('image-viewer');
 
@@ -779,3 +953,6 @@
         window.saveAsImage = saveAsImage;
         window.closeImageViewer = closeImageViewer;
         window.printScaled = printScaled;
+    </script>
+</body>
+</html>
