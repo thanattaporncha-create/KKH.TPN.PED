@@ -1701,16 +1701,7 @@
             const elyteOsm_raw = bag > 0 ? ((na + k) * bw * 2 * 1000) / bag : 0;
             const totalOsm_raw = proteinOsm_raw + dextroseOsm_raw + elyteOsm_raw;
 
-            const pnCalDay = proteinCal_raw + dextroseCal_raw + fatCal_raw;
-            const pnCalKg = bw > 0 ? pnCalDay / bw : 0;
-            const milkCalDay = totalMilk * 20 / 30;
-            const milkCalKg = bw > 0 ? milkCalDay / bw : 0;
-            const totalCalDay = pnCalDay + milkCalDay;
-            const dispPN = r0(pnCalKg);
-            const dispMilk = r0(milkCalKg);
-            const dispTotalKg = dispPN + dispMilk;
-
-            // Update DOM
+            // Update DOM (ต้อง update ตารางก่อน เพื่อใช้ค่าที่แสดงในการคำนวณ)
             document.getElementById('protein-volume').textContent = r1(proteinVol_raw).toFixed(1);
             document.getElementById('protein-calories').textContent = r1(proteinCal_raw).toFixed(1);
             document.getElementById('protein-osmol').textContent = r1(proteinOsm_raw).toFixed(1);
@@ -1720,6 +1711,20 @@
             document.getElementById('gir-result').textContent = r1(gir_raw).toFixed(1) + ' mg/kg/min';
             document.getElementById('fat-volume').textContent = fatVol_1.toFixed(1);
             document.getElementById('fat-calories').textContent = r1(fatCal_raw).toFixed(1);
+
+            // ✅ คำนวณ Total Calories โดยดึงจากค่าในตารางที่แสดงแล้ว (หลังปัดเศษ)
+            const displayedProteinCal = parseFloat(document.getElementById('protein-calories').textContent) || 0;
+            const displayedDextroseCal = parseFloat(document.getElementById('dextrose-calories').textContent) || 0;
+            const displayedFatCal = parseFloat(document.getElementById('fat-calories').textContent) || 0;
+            
+            const pnCalDay = displayedProteinCal + displayedDextroseCal + displayedFatCal;
+            const pnCalKg = bw > 0 ? pnCalDay / bw : 0;
+            const milkCalDay = totalMilk * 20 / 30;
+            const milkCalKg = bw > 0 ? milkCalDay / bw : 0;
+            const totalCalDay = pnCalDay + milkCalDay;
+            const dispPN = r0(pnCalKg);
+            const dispMilk = r0(milkCalKg);
+            const dispTotalKg = dispPN + dispMilk;
             document.getElementById('tf-from-milk').textContent = r0(tfMilk_raw) + ' ml/kg/day';
             document.getElementById('milk-calories-kg').textContent = dispMilk + ' kcal/kg/day';
             document.getElementById('p-volume').textContent = pVol_1.toFixed(1) + ' ml';
