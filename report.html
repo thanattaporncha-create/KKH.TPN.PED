@@ -476,9 +476,9 @@
 
             if (!data.hn && !data.name && !data.ward) {
                 const infoItems = document.querySelectorAll('#patient-info-text .info-item');
-                if (infoItems[0]) infoItems[0].style.display = 'none';
-                if (infoItems[1]) infoItems[1].style.display = 'none';
-                if (infoItems[2]) infoItems[2].style.display = 'none';
+                if (infoItems[0](undefined)) infoItems[0](undefined).style.display = 'none';
+                if (infoItems[1](undefined)) infoItems[1](undefined).style.display = 'none';
+                if (infoItems[2](undefined)) infoItems[2](undefined).style.display = 'none';
             }
         }
 
@@ -534,7 +534,6 @@
         note: data.gir ? `GIR: ${data.gir}` : '' // ✅ เพิ่ม GIR ในช่อง Note
     });
 }
-
         if (parseFloat(data.pVol) > 0) {
             const pVolShow = parseFloat(String(data.pVol).replace(/[^0-9.]/g, '')).toFixed(1);
             const naFromGly = (data.naFromGly !== undefined && data.naFromGly !== null && String(data.naFromGly).trim() !== '')
@@ -711,10 +710,8 @@
         });
 
 // ✅ ดึง Total PN calories per day ตรงจาก index
-const pnCalDay = data.pnCalDay || '0';
-document.getElementById('display-pn-cal').textContent = pnCalDay;
-
-document.getElementById('display-pn-cal').textContent = isFinite(pnCalPerDay) ? pnCalPerDay.toFixed(0) : '0';
+const pnCalDay = data.pnCalDay ? parseInt(String(data.pnCalDay).replace(/[^0-9.]/g, ''), 10) : 0;
+document.getElementById('display-pn-cal').textContent = pnCalDay ? pnCalDay + '' : '0';
 
         const osmolValue = data.totalOsmol ? String(data.totalOsmol).replace('~', '') : '0';
         const osmolNum = parseInt(osmolValue || '0', 10);
