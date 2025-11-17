@@ -1338,7 +1338,7 @@
     calculateTPN();
   });
 
-  document.getElementById('submitBtn')?.addEventListener('click', function() {
+document.getElementById('submitBtn')?.addEventListener('click', function() {
   const bw = document.getElementById('bw')?.value;
   const orderDate = document.getElementById('order-date')?.value;
 
@@ -1353,7 +1353,7 @@
   const hn = document.getElementById('patient-hn')?.value.trim();
   const name = document.getElementById('patient-name')?.value.trim();
   const ward = document.getElementById('patient-ward')?.value.trim();
-
+  
   const hasManualData = hn && name && ward;
 
   // ต้องมีอย่างใดอย่างหนึ่ง: รูป Sticker หรือข้อมูลครบ
@@ -1363,6 +1363,92 @@
   }
 
   console.log('✅ Validation passed:', { hasStickerImage, hasManualData });
+
+  const dayName = getDayName(orderDate);
+  const dsel = id => document.getElementById(id)?.textContent || document.getElementById(id)?.value || '';
+
+  const reportData = {
+    orderDate,
+    orderDayName: dayName,
+    route: document.querySelector('input[name="tpn-route"]:checked')?.value || 'central',
+    proteinProduct: getProteinProductName(),
+    fatProduct: getFatProductName(),
+    
+    hn: hn || '',
+    name: name || '',
+    ward: ward || '',
+    stickerImage: window.getStickerImage ? window.getStickerImage() : null,
+    
+    bw,
+    rate: document.getElementById('rate')?.value || '0',
+    bag: document.getElementById('bag')?.value || '0',
+    protein: document.getElementById('protein')?.value || '0',
+    dextrose: document.getElementById('dextrose')?.value || '0',
+    fat: document.getElementById('fat')?.value || '0',
+    milk: document.getElementById('milk')?.value || '0',
+    totalMilk: document.getElementById('total-milk')?.value || '0',
+    p: document.getElementById('p')?.value || '0',
+    na: document.getElementById('na')?.value || '0',
+    k: document.getElementById('k')?.value || '0',
+    ca: document.getElementById('ca')?.value || '0',
+    mg: document.getElementById('mg')?.value || '0',
+
+    proteinVol: extractNumberString(dsel('protein-volume')),
+    proteinCal: extractNumberString(dsel('protein-calories')),
+    dextroseVol: extractNumberString(dsel('dextrose-volume')),
+    dextroseCal: extractNumberString(dsel('dextrose-calories')),
+    fatVol: extractNumberString(dsel('fat-volume')),
+    fatCal: extractNumberString(dsel('fat-calories')),
+
+    gir: dsel('gir-result'),
+
+    pVol: extractNumberString(dsel('p-volume')),
+    naFromGly: extractNumberString(dsel('na-from-glycophos')),
+    naSource: document.querySelector('input[name="na-source"]:checked')?.value || '',
+    naclVol: extractNumberString(dsel('nacl-volume')),
+    naAcVol: extractNumberString(dsel('na-acetate-volume')),
+
+    kSource: document.querySelector('input[name="k-source"]:checked')?.value || '',
+    kclVol: extractNumberString(dsel('kcl-volume')),
+    kAcVol: extractNumberString(dsel('k-acetate-volume')),
+
+    caVol: extractNumberString(dsel('ca-volume')),
+    mgVol: extractNumberString(dsel('mg-volume')),
+
+    peditrace: extractNumberString(dsel('peditrace-volume')),
+    peditFreq: document.querySelector('input[name="peditrace-freq"]:checked')?.value || 'daily',
+    peditDay: document.getElementById('peditrace-day')?.value || '1',
+
+    cernevit: extractNumberString(dsel('cernevit-volume')),
+    cernFreq: document.querySelector('input[name="cernevit-freq"]:checked')?.value || 'daily',
+    cernDay: document.getElementById('cernevit-day')?.value || '1',
+
+    vitKChoice: document.querySelector('input[name="vitamin-k-choice"]:checked')?.value || 'daily',
+    vitKDay: document.getElementById('vitamin-k-day')?.value || '1',
+    vitKDaily: extractNumberString(dsel('vitamin-k-daily')),
+    vitKWeekly: extractNumberString(dsel('vitamin-k-weekly')),
+
+    hasPicc: document.getElementById('picc-line-checkbox')?.checked || false,
+    heparinVol: extractNumberString(dsel('heparin-volume')),
+
+    sterileWater: extractNumberString(dsel('sterile-water-volume')),
+    totalOsmol: extractNumberString(dsel('total-osmol')),
+
+    // ✅ ส่งค่า Total PN Calories per day จาก index
+    pnCalPerDay: extractNumberString(dsel('total-calories-day')),
+    totalCalDay: extractNumberString(dsel('total-calories-day')),
+    totalCalKg: extractNumberString(dsel('total-calories-kg')),
+    pnCalKg: extractNumberString(dsel('breakdown-pn')),
+    milkCalKg: extractNumberString(dsel('breakdown-milk')),
+    tfFromMilk: dsel('tf-from-milk')
+  };
+
+  localStorage.setItem('tpnReportData', JSON.stringify(reportData));
+  autosaveCollect();
+  
+  console.log('✅ Report data saved, redirecting...');
+  window.location.href = 'report.html';
+});
 
     const dayName = getDayName(orderDate);
   const dsel = id => document.getElementById(id)?.textContent || document.getElementById(id)?.value || '';
