@@ -710,11 +710,9 @@
             tbody.appendChild(row);
         });
 
-// ✅ คำนวณจากแคลอรี่ที่แท้จริง
-const proteinCal = parseFloat(String(data.proteinCal).replace(/[^0-9.]/g, '')) || 0;
-const dextroseCal = parseFloat(String(data.dextroseCal).replace(/[^0-9.]/g, '')) || 0;
-const fatCal = parseFloat(String(data.fatCal).replace(/[^0-9.]/g, '')) || 0;
-const pnCalPerDay = proteinCal + dextroseCal + fatCal;
+// ✅ ดึง Total PN calories per day ตรงจาก index
+const pnCalDay = data.pnCalDay || '0';
+document.getElementById('display-pn-cal').textContent = pnCalDay;
 
 document.getElementById('display-pn-cal').textContent = isFinite(pnCalPerDay) ? pnCalPerDay.toFixed(0) : '0';
 
