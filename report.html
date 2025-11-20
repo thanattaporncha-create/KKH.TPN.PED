@@ -339,7 +339,7 @@ body {
     height: auto;
 }
 </style>
-    
+
 
 </head>
 <body>
@@ -697,6 +697,18 @@ body {
         }
     }
 
+    // ✅ แสดง Heparin เมื่อมี PICC line (อยู่ก่อน Fat)
+    if (data.hasPicc) {
+        const heparinVol = data.heparinVol || '0';
+        compositions.push({
+            name: 'Heparin (1 unit/ml)',
+            input: '-',
+            volume: heparinVol,
+            note: 'สำหรับ PICC line',
+            highlight: false
+        });
+    }
+
     // Handle Fat with administration options
     const fatVolNum = data.fatVol ? parseFloat(String(data.fatVol).replace(/[^0-9.]/g, '')) : 0;
     if (fatVolNum > 0) {
@@ -736,15 +748,14 @@ body {
         });
     }
 
-    if (parseFloat(data.sterileWater) > 0) {
-        compositions.push({
-            name: 'Sterile Water',
-            input: '-',
-            volume: data.sterileWater,
-            note: '',
-            highlight: true
-        });
-    }
+    // ✅ แสดง Sterile Water เสมอ (แม้ค่าเป็น 0)
+    compositions.push({
+        name: 'Sterile Water',
+        input: '-',
+        volume: data.sterileWater || '0',
+        note: '',
+        highlight: true
+    });
 
     compositions.forEach(comp => {
         const row = document.createElement('tr');
