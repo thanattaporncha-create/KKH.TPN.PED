@@ -1195,6 +1195,20 @@
     <section class="section">
         <h2>Electrolytes</h2>
         
+       <!-- Phosphorus (P) -->
+        <div class="electrolyte-item">
+            <div class="electrolyte-header">
+                <div class="electrolyte-input">
+                    <label for="p">P (Glycophos®) (mmol/kg/day)</label>
+                    <input type="text" inputmode="decimal" id="p" placeholder="กรอกปริมาณ P">
+                </div>
+                <div class="electrolyte-result">
+                    <div class="electrolyte-result-label">P Volume</div>
+                    <div class="electrolyte-result-value" id="p-volume">0 ml</div>
+                </div>
+            </div>
+        </div>
+        
         <!-- Sodium (Na) -->
         <div class="electrolyte-item">
             <div class="electrolyte-header">
@@ -1224,20 +1238,6 @@
                     <span class="source-option-label">Na acetate (3 mEq/ml)</span>
                     <span class="source-option-value" id="na-acetate-volume">0 ml</span>
                 </label>
-            </div>
-        </div>
-        
-        <!-- Phosphorus (P) -->
-        <div class="electrolyte-item">
-            <div class="electrolyte-header">
-                <div class="electrolyte-input">
-                    <label for="p">P (Glycophos®) (mmol/kg/day)</label>
-                    <input type="text" inputmode="decimal" id="p" placeholder="กรอกปริมาณ P">
-                </div>
-                <div class="electrolyte-result">
-                    <div class="electrolyte-result-label">P Volume</div>
-                    <div class="electrolyte-result-value" id="p-volume">0 ml</div>
-                </div>
             </div>
         </div>
         
@@ -1646,8 +1646,10 @@
     const AUTOSAVE_KEY = 'tpnFormAutosave';
 
     function autosaveCollect() {
-        const ids = ['order-date','patient-hn','patient-name','patient-ward','bw','rate','bag',
-                     'protein','dextrose','fat','milk','total-milk','p','na','k','ca','mg'];
+        const ids = ['order-date','patient-hn','patient-name','patient-ward','bw','rate','bag',
+                     'protein','dextrose','fat','milk','total-milk','p','na','k','ca','mg','additional-name',
+    'additional-amount','additional-unit'];
+        
         const data = {};
         ids.forEach(id => {
             const el = document.getElementById(id);
@@ -1686,10 +1688,11 @@
         if (!raw) return;
         try {
             const data = JSON.parse(raw);
-            Object.entries(data).forEach(([k,v]) => {
-                if (['order-date','patient-hn','patient-name','patient-ward','bw','rate','bag',
-                     'protein','dextrose','fat','milk','total-milk','p','na','k','ca','mg'].includes(k)) {
-                    const el = document.getElementById(k);
+            Object.entries(data).forEach(([k,v]) => {
+                if (['order-date','patient-hn','patient-name','patient-ward','bw','rate','bag',
+                     'protein','dextrose','fat','milk','total-milk','p','na','k','ca','mg','additional-name', // << เพิ่ม 3 ช่อง
+    'additional-amount','additional-unit'].includes(k)) { // << เพิ่ม 3 ช่อง
+                    const el = document.getElementById(k);
                     if (el) el.value = v;
                 }
             });
@@ -2347,6 +2350,10 @@
             hn: hn || '',
             name: name || '',
             ward: ward || '',
+            additionalName: document.getElementById('additional-name')?.value.trim() || '',
+    additionalAmount: document.getElementById('additional-amount')?.value || '0',
+    additionalUnit: document.getElementById('additional-unit')?.value || 'ml',
+    stickerImage: window.getStickerImage ? window.getStickerImage() : null,
             stickerImage: window.getStickerImage ? window.getStickerImage() : null,
             bw,
             rate: document.getElementById('rate')?.value || '0',
@@ -2403,7 +2410,22 @@
             fatDripDuration: document.querySelector('input[name="fat-drip-duration"]:checked')?.value || '24',
             fatSplit: document.querySelector('input[name="fat-split"]:checked')?.value || 'no-split'
         };
-
+// — สร้าง list ของ Additional —
+const additionalList = [];
+if (reportData.additionalName) {
+  additionalList.push({
+    name: reportData.additionalName,
+    input: '-',   // ถ้าอยากโชว์ input badge แทน ให้แก้เป็น addl.input
+    volume: reportData.additionalUnit === 'ml'
+             ? reportData.additionalAmount
+             : '',
+    note:   reportData.additionalUnit === 'mg'
+             ? reportData.additionalAmount + ' mg'
+             : ''
+  });
+}
+// ผนึกลง reportData
+reportData.additionalList = additionalList;
         localStorage.setItem('tpnReportData', JSON.stringify(reportData));
         autosaveCollect();
         console.log('✅ Report data saved, redirecting...');
