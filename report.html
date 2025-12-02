@@ -11,7 +11,6 @@
             size: A4;
         }
 
-
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -460,16 +459,17 @@ body {
 
 <script>
     function goBack() {
-        // ✅ บันทึกข้อมูล fat options กลับไปที่ autosave
-        const AUTOSAVE_KEY = 'tpnCalculatorState';
-        const currentAutosave = JSON.parse(localStorage.getItem(AUTOSAVE_KEY) || '{}');
-        
-        // อัพเดทค่า fat options จาก report data
-        if (data.fatPriming) currentAutosave.fatPriming = data.fatPriming;
-        if (data.fatDripDuration) currentAutosave.fatDripDuration = data.fatDripDuration;
-        if (data.fatSplit) currentAutosave.fatSplit = data.fatSplit;
-        
-        localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(currentAutosave));
+        // report.html: บรรทัดประมาณ 470 (ในฟังก์ชัน goBack)
+        // ✅ บันทึกข้อมูล fat options กลับไปที่ autosave
+        const AUTOSAVE_KEY = 'tpnFormAutosave'; // << แก้จาก tpnCalculatorState เป็น tpnFormAutosave
+        const currentAutosave = JSON.parse(localStorage.getItem(AUTOSAVE_KEY) || '{}');
+        
+        // อัพเดทค่า fat options จาก report data
+        if (data.fatPriming) currentAutosave.fatPriming = data.fatPriming;
+        if (data.fatDripDuration) currentAutosave.fatDripDuration = data.fatDripDuration;
+        if (data.fatSplit) currentAutosave.fatSplit = data.fatSplit;
+        
+        localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(currentAutosave));
         
         window.location.href = 'index.html';
     }
@@ -709,6 +709,17 @@ body {
         });
     }
 
+    // — ดึงรายการ Additional มาต่อท้าย compositions —
+if (Array.isArray(data.additionalList)) {
+  data.additionalList.forEach(add => {
+    compositions.push({
+      name: add.name,
+      input: add.input,
+      volume: add.volume,
+      note:   add.note
+    });
+  });
+}
     // Handle Fat with administration options
     const fatVolNum = data.fatVol ? parseFloat(String(data.fatVol).replace(/[^0-9.]/g, '')) : 0;
     if (fatVolNum > 0) {
