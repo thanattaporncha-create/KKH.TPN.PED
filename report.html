@@ -125,6 +125,7 @@ body {
 
 .composition-table tr:nth-child(even) { background: #f8fafc; }
 .highlight-row { background: #fef3c7 !important; font-weight: 600; }
+.highlight-row.orange { background: #fed7aa !important; }
 .input-badge {
     background: #e0f2fe;
     color: #0369a1;
@@ -337,6 +338,46 @@ body {
     width: 200px;
     height: auto;
 }
+.signature-display {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 2px solid #e2e8f0;
+}
+
+.signature-display h3 {
+    margin: 0 0 15px 0;
+    font-size: 1em;
+    color: #2d3748;
+    font-weight: 600;
+}
+
+.signature-content {
+    display: flex;
+    align-items: flex-end;
+    gap: 30px;
+}
+
+.signature-image {
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background: white;
+    max-width: 300px;
+    height: auto;
+}
+
+.signature-name {
+    font-size: 1em;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.signature-label {
+    font-size: 0.85em;
+    color: #64748b;
+    margin-bottom: 5px;
+}
 </style>
 
 
@@ -448,7 +489,20 @@ body {
           </tbody>
       </table>
   </div>
-
+<!-- Signature Display -->
+  <div class="signature-display" id="signature-display" style="display: none;">
+      <h3>✍️ ผู้ตรวจสอบ</h3>
+      <div class="signature-content">
+          <div>
+              <div class="signature-label">ลายเซ็น:</div>
+              <img id="display-signature-image" class="signature-image" src="" alt="Signature">
+          </div>
+          <div>
+              <div class="signature-label">ชื่อ:</div>
+              <div class="signature-name" id="display-signature-name"></div>
+          </div>
+      </div>
+  </div>
   <div class="footer">
       <p>Generated on <span id="generated-date"></span></p>
       <p style="margin-top: 5px;">โรงพยาบาลขอนแก่น TPN Calculator for Pediatrics © 2025</p>
@@ -466,6 +520,16 @@ body {
     // ✅ บันทึกข้อมูล fat options กลับไปที่ autosave
     const AUTOSAVE_KEY = 'tpnFormAutosave';
     const currentAutosave = JSON.parse(localStorage.getItem(AUTOSAVE_KEY) || '{}');
+      // Display signature if available
+    if (data.signatureImage && data.signatureName) {
+        const signatureDisplay = document.getElementById('signature-display');
+        const signatureImage = document.getElementById('display-signature-image');
+        const signatureName = document.getElementById('display-signature-name');
+        
+        signatureImage.src = data.signatureImage;
+        signatureName.textContent = data.signatureName;
+        signatureDisplay.style.display = 'block';
+    }
     
     // อัพเดทค่า fat options จาก report data
     if (data.fatPriming) currentAutosave.fatPriming = data.fatPriming;
@@ -477,6 +541,10 @@ body {
     if (data.isPreterm !== undefined) currentAutosave.isPreterm = data.isPreterm;
     if (data.zincChoice) currentAutosave.zincChoice = data.zincChoice;
     if (data.zincVolume) currentAutosave.zincVolume = data.zincVolume;
+
+    // ✅ เพิ่ม Signature data
+    if (data.signatureName) currentAutosave.signatureName = data.signatureName;
+    if (data.signatureImage) currentAutosave.signatureImage = data.signatureImage;
     
     localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(currentAutosave));
     
@@ -493,6 +561,16 @@ body {
     }
 
     const data = JSON.parse(localStorage.getItem('tpnReportData') || '{}');
+    // ✅ Display signature if available
+if (data.signatureImage && data.signatureName) {
+    const signatureDisplay = document.getElementById('signature-display');
+    const signatureImage = document.getElementById('display-signature-image');
+    const signatureName = document.getElementById('display-signature-name');
+    
+    signatureImage.src = data.signatureImage;
+    signatureName.textContent = data.signatureName;
+    signatureDisplay.style.display = 'block';
+}
 
     if (data.stickerImage) {
         const stickerContainer = document.getElementById('sticker-container');
@@ -715,7 +793,8 @@ body {
             input: 'Preterm',
             volume: parseFloat(zincVol).toFixed(2),
             note: '',
-            highlight: false
+            highlight: true,  // ← เปลี่ยนเป็น true
+        highlightColor: 'orange'  // ← เพิ่มบรรทัดนี้
         });
     }
     // ✅ แสดง Heparin เมื่อมี PICC line (อยู่ก่อน Fat)
@@ -793,19 +872,24 @@ if (Array.isArray(data.additionalList)) {
     });
 
     compositions.forEach(comp => {
-        const row = document.createElement('tr');
-        if (comp.highlight) row.classList.add('highlight-row');
-        const volumeCellStyle = comp.fat
-            ? 'text-align: center; font-weight: 600; color: #dc2626;'
-            : 'text-align: center; font-weight: 600;';
-        row.innerHTML = `
-            <td>${comp.name}</td>
-            <td style="text-align: center;"><span class="input-badge">${comp.input}</span></td>
-            <td style="${volumeCellStyle}">${comp.volume} ml</td>
-            <td style="text-align: center; font-size: 8pt;">${comp.note || ''}</td>
-        `;
-        tbody.appendChild(row);
-    });
+    const row = document.createElement('tr');
+    if (comp.highlight) {
+        row.classList.add('highlight-row');
+        if (comp.highlightColor === 'orange') {
+            row.classList.add('orange');
+        }
+    }
+    const volumeCellStyle = comp.fat
+        ? 'text-align: center; font-weight: 600; color: #dc2626;'
+        : 'text-align: center; font-weight: 600;';
+    row.innerHTML = `
+        <td>${comp.name}</td>
+        <td style="text-align: center;"><span class="input-badge">${comp.input}</span></td>
+        <td style="${volumeCellStyle}">${comp.volume} ml</td>
+        <td style="text-align: center; font-size: 8pt;">${comp.note || ''}</td>
+    `;
+    tbody.appendChild(row);
+});
 
     const bwNum = parseFloat(String(data.bw).replace(/[^0-9.]/g, '')) || 0;
     const pnCalKg = parseFloat(String(data.pnCalKg).replace(/[^0-9.]/g, '')) || 0;
